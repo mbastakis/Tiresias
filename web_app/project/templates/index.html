@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="../static/js/main.js" defer></script>
+    <title>QnA in Greek</title>
+</head>
+
+<body>
+    <load-bar class=""></load-bar>
+    <h1 id="header">Question and Answering in Greek</h1>
+    <div class="context-section">
+        <h2>Insert Context</h2>
+        <div class="text-area-wrapper">
+            <textarea name="context" id="context" cols="30" rows="10"></textarea>
+        </div>
+        <div class="button-countainer">
+            <button class="context-buttons" id="add-button">Add question</button>
+            <button class="context-buttons" id="answer-button">Answer questions</button>
+            
+            <select name="models" id="models" >
+                <option value="deepset/roberta-base-squad2">deepset/roberta-base-squad2</option>
+                <option value="bert-large-uncased-whole-word-masking-finetuned-squad">bert-large-uncased-whole-word-masking-finetuned-squad</option>
+                <option value="distilbert-base-cased-distilled-squad">distilbert-base-cased-distilled-squad</option>
+                <option value="deepset/bert-large-uncased-whole-word-masking-squad2">deepset/bert-large-uncased-whole-word-masking-squad2</option>
+                <option value="distilbert-base-uncased-distilled-squad">distilbert-base-uncased-distilled-squad</option>
+                <option value="rsvp-ai/bertserini-bert-base-squad">rsvp-ai/bertserini-bert-base-squad</option>
+                <option value="deepset/minilm-uncased-squad2">deepset/minilm-uncased-squad2</option>
+                <option value="dmis-lab/biobert-large-cased-v1.1-squad">dmis-lab/biobert-large-cased-v1.1-squad</option>
+                <option value="deepset/bert-base-cased-squad2">deepset/bert-base-cased-squad2</option>
+                <option value="bert-large-cased-whole-word-masking-finetuned-squad">bert-large-cased-whole-word-masking-finetuned-squad</option>
+            </select>
+        </div>
+    </div>
+    <div class="questions-section">
+        <div class="question" id="0">
+            <h3>Write a question</h3>
+            <div class="question-field">
+                <input class='input' type="text" value="">
+            </div>
+
+            <output></output>
+        </div>
+    </div>
+
+    <a class="up-arrow" href="#header"><i class="fa-solid fa-arrow-up"></i></a>
+</body>
+
+</html>

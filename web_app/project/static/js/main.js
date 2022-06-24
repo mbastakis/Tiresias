@@ -34,11 +34,13 @@ $('#answer-button').on('click', () => {
     $('load-bar').addClass("loader");
 
     model = $('#models').val();
+    lang = $('#lang').val();
 
-    let request = {}
+    let request = {};
     request.context = context;
     request.questions = [];
     request.model = model;
+    request.lang = lang;
     for (let i = 0; i < inputList.length; i++) {
         request.questions.push(inputList.get(i).value);
     }

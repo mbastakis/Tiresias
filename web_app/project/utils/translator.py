@@ -32,7 +32,7 @@ def helsinki_translate(text, input_lang, output_lang):
             if sentence not in greek_to_english.keys():
                 greek_to_english[sentence] = translate_sentence_with_helsinki(sentence, input_lang, output_lang)
             translated_text += greek_to_english[sentence]
-    return translated_text
+    return translated_text.replace('City name (optional, probably does not need a translation)', '')
 
 
 def request_bing_translation(input, src, dest):

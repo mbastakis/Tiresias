@@ -20,10 +20,6 @@ def answersPage():
 
     if dict['context'] == '':
         contexts = controller.questions_to_contexts(questions)
-        if contexts == None:
-            print('Could not get entitity from some of these questions: ', questions)
-            return
-
     else:
         if language == 'el':
             contexts.append(controller.translate_context(dict['context']))
@@ -33,9 +29,14 @@ def answersPage():
     for i in range(len(questions)):
         print('test')
         if dict['context'] == '':
-            answers['answer' + str(i)] = controller.answer_question(contexts[i], questions[i], dict["model"])
+            if contexts[i] == None:
+                answer = None
+                conf_score = None
+            else:
+                answer, conf_score = controller.answer_question(contexts[i], questions[i], dict["model"], language)
         else:
-            answers['answer' + str(i)] = controller.answer_question(contexts[0], questions[i], dict["model"])
+            answer, conf_score = controller.answer_question(contexts[0], questions[i], dict["model"], language)
+        answers['answer' + str(i)] = {'text' : answer, 'conf_score' : conf_score}
     print("server responds...")
     print(answers)
     return answers

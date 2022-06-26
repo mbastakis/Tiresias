@@ -4,10 +4,14 @@ from project.utils.translator import translate
 from transformers import pipeline
 import project.utils.erm as erm
 
-def answer_question(context, question, model):
+def answer_question(context, question, model, lang):
     print('in answer question: ', context, question)
     question_answerer = pipeline(task="question-answering", model = model)
-    return translate(question_answerer(question = question, context = context)['answer'], 'helsinki', 'en', 'el')
+    qa = question_answerer(question = question, context = context)
+    if lang == 'el':
+        return translate(qa['answer'], 'helsinki', 'en', 'el'), qa['score']
+    else:
+        return qa['answer'], qa['score']
 
 def translate_questions(questions):
     translated_questions = []
@@ -27,10 +31,11 @@ def questions_to_contexts(questions):
         if gr_context != '':
             gr_context = translate(gr_context, 'helsinki', 'el', 'en')
             gr_context = '' if gr_context == None else gr_context
-        tmp.append(gr_context + '\n' + en_context)
         print('In questions_to_contexts for ', q, ':\n', tmp[-1])
         if en_context == '' and gr_context == '':
-            return None
+            tmp.append(None)
+        else:
+            tmp.append(gr_context + '\n' + en_context)
     return tmp
 
 # with open(output_file, 'a', encoding='UTF16') as file:

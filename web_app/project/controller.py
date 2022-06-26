@@ -2,13 +2,41 @@
 import csv, json, requests
 from project.utils.translator import translate
 from transformers import pipeline
+import project.utils.erm as erm
 
-
-def answer_question(context, question, model):
-    context = translate(context, 'google', 'el', 'en')
-    question = translate(question, 'google', 'el', 'en')
+def answer_question(context, question, model, lang):
+    print('in answer question: ', context, question)
     question_answerer = pipeline(task="question-answering", model = model)
-    return translate(question_answerer(question = question, context = context)['answer'], 'google', 'en', 'el')
+    qa = question_answerer(question = question, context = context)
+    if lang == 'el':
+        return translate(qa['answer'], 'helsinki', 'en', 'el'), qa['score']
+    else:
+        return qa['answer'], qa['score']
+
+def translate_questions(questions):
+    translated_questions = []
+    for q in questions:
+        translated_questions.append(translate(q, 'helsinki', 'el', 'en'))
+    return translated_questions
+
+def translate_context(context):
+    return translate(context, 'helsinki', 'el', 'en')
+
+def questions_to_contexts(questions):
+    tmp = []
+    for q in questions:
+        print('in questions_to_contexts current question: ', q)
+        gr_context = erm.get_context(q, 'el')
+        en_context = erm.get_context(q, 'en')
+        if gr_context != '':
+            gr_context = translate(gr_context, 'helsinki', 'el', 'en')
+            gr_context = '' if gr_context == None else gr_context
+        print('In questions_to_contexts for ', q, ':\n', tmp[-1])
+        if en_context == '' and gr_context == '':
+            tmp.append(None)
+        else:
+            tmp.append(gr_context + '\n' + en_context)
+    return tmp
 
 # with open(output_file, 'a', encoding='UTF16') as file:
 #     writer = csv.writer(file)

@@ -1,7 +1,6 @@
-import json
 from project import app
 from project import controller
-from flask import render_template, redirect, request, jsonify
+from flask import render_template, request
 
 @app.route('/')  # Home page
 def homePage():
@@ -9,11 +8,37 @@ def homePage():
 
 @app.route('/questions', methods=['POST'])  
 def answersPage():
+    questions = []
+    contexts = []
     dict = request.json
     answers = {}
-    for i in range(len(dict['questions'])):
-        answers['answer' + str(i)] = controller.answer_question(dict["context"], dict["questions"][i], dict["model"])
+    language = dict['lang']
+    if language == 'el':
+        questions = controller.translate_questions(dict['questions'])
+    else:
+        questions = dict['questions']
+
+    if dict['context'] == '':
+        contexts = controller.questions_to_contexts(questions)
+    else:
+        if language == 'el':
+            contexts.append(controller.translate_context(dict['context']))
+        else:
+            contexts.append(dict['context'])
+
+    for i in range(len(questions)):
+        print('test')
+        if dict['context'] == '':
+            if contexts[i] == None:
+                answer = None
+                conf_score = None
+            else:
+                answer, conf_score = controller.answer_question(contexts[i], questions[i], dict["model"], language)
+        else:
+            answer, conf_score = controller.answer_question(contexts[0], questions[i], dict["model"], language)
+        answers['answer' + str(i)] = {'text' : answer, 'conf_score' : conf_score}
     print("server responds...")
+    print(answers)
     return answers
 
 

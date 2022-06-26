@@ -108,7 +108,6 @@ $('#answer-button').on('click', () => {
     let trans = $('#trans').val();
     let erm = $('#erm').val();
 
-
     // $('load-bar').addClass("loader");
 
 
@@ -117,27 +116,30 @@ $('#answer-button').on('click', () => {
     request.questions = [];
     request.model = model;
     request.lang = lang;
-    for (let i = 0; i < inputList.length; i++) {
-        request.questions.push(inputList.get(i).value);
+    request.trans = trans;
+    request.erm = erm;
+
+    for (let i = 0; i < questionList.length; i++) {
+        request.questions.push(questionList.get(i).value);
     }
 
-    // $.ajax({
-    //     type: 'POST',
-    //     contentType: 'application/json',
-    //     data: JSON.stringify(request),
-    //     dataType: 'json',
-    //     url: 'http://127.0.0.1:8080/questions',
-    //     success: (answers) => {
-    //         $('load-bar').removeClass("loader");
-    //         i = 0;
-    //         for (let index in answers) {
-    //             outputList.get(i).innerText = answers[index];
-    //             i++;
-    //         }
-    //     },
-    //     error: (e) => {
-    //         $('load-bar').removeClass("loader");
-    //         console.log(e);
-    //     }
-    // });
+    $.ajax({
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(request),
+        dataType: 'json',
+        url: 'http://127.0.0.1:5000/questions',
+        success: (answers) => {
+            $('load-bar').removeClass("loader");
+            i = 0;
+            for (let index in answers) {
+                outputList.get(i).innerText = answers[index];
+                i++;
+            }
+        },
+        error: (e) => {
+            $('load-bar').removeClass("loader");
+            console.log(e);
+        }
+    });
 });

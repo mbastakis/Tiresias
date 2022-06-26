@@ -11,6 +11,8 @@ def answersPage():
     questions = []
     contexts = []
     dict = request.json
+    print(dict)
+    return
     answers = {}
     language = dict['lang']
     if language == 'el':

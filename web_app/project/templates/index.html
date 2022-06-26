@@ -5,58 +5,161 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
-        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="../static/js/main.js" defer></script>
-    <title>QnA in Greek</title>
+    <title>Tiresias</title>
+    <link rel="stylesheet" href="output.css">
+    <script src="main.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
-    <load-bar class=""></load-bar>
-    <h1 id="header">Question and Answering in Greek</h1>
-    <div class="context-section">
-        <h2>Insert Context</h2>
-        <div class="text-area-wrapper">
-            <textarea name="context" id="context" cols="30" rows="10"></textarea>
-        </div>
-        <div class="button-countainer">
-            <button class="context-buttons" id="add-button">Add question</button>
-            <button class="context-buttons" id="answer-button">Answer questions</button>
-            
-            <select name="models" id="models" >
-                <option value="deepset/roberta-base-squad2">deepset/roberta-base-squad2</option>
-                <option value="bert-large-uncased-whole-word-masking-finetuned-squad">bert-large-uncased-whole-word-masking-finetuned-squad</option>
-                <option value="distilbert-base-cased-distilled-squad">distilbert-base-cased-distilled-squad</option>
-                <option value="deepset/bert-large-uncased-whole-word-masking-squad2">deepset/bert-large-uncased-whole-word-masking-squad2</option>
-                <option value="distilbert-base-uncased-distilled-squad">distilbert-base-uncased-distilled-squad</option>
-                <option value="rsvp-ai/bertserini-bert-base-squad">rsvp-ai/bertserini-bert-base-squad</option>
-                <option value="deepset/minilm-uncased-squad2">deepset/minilm-uncased-squad2</option>
-                <option value="dmis-lab/biobert-large-cased-v1.1-squad">dmis-lab/biobert-large-cased-v1.1-squad</option>
-                <option value="deepset/bert-base-cased-squad2">deepset/bert-base-cased-squad2</option>
-                <option value="bert-large-cased-whole-word-masking-finetuned-squad">bert-large-cased-whole-word-masking-finetuned-squad</option>
-            </select>
-            <select name="lang" id="lang" >
-                <option value="en">English</option>
-                <option value="el">Greek</option>
-            </select>
-        </div>
-    </div>
-    <div class="questions-section">
-        <div class="question" id="0">
-            <h3>Write a question</h3>
-            <div class="question-field">
-                <input class='input' type="text" value="">
+
+    <div class="flex flex-no-wrap">
+        <!-- Sidebar starts -->
+        <div
+            class="w-96 h-screen sm:relative fixed bg-base-200 shadow-2xl flex-col justify-between hidden sm:flex rounded-md">
+            <div class="px-8">
+                <div class="h-16 w-full flex items-center mt-5 mb-28">
+                    <h1 class="font-mono font-semibold text-4xl  text-primary">Configuration</h1>
+                </div>
+                <!-- Sidebar Content -->
+                <div class="w-full max-w-xs mb-5 text-sm flex flex-row bg-primary pl-4 items-center rounded-lg h-12">
+                    <div class="font-semibold text-gray-200 mr-24">Give Context:</div>
+                    <div class="form-control">
+                        <input id="context-check" type="checkbox" class="toggle toggle-md context-toggle" checked />
+                    </div>
+                </div>
+                <select id="model" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
+                    <option disabled selected>Pick a model</option>
+                    <option value="deepset/roberta-base-squad2">deepset/roberta-base-squad2</option>
+                    <option value="bert-large-uncased-whole-word-masking-finetuned-squad">
+                        bert-large-uncased-whole-word-masking-finetuned-squad</option>
+                    <option value="distilbert-base-cased-distilled-squad">distilbert-base-cased-distilled-squad</option>
+                    <option value="deepset/bert-large-uncased-whole-word-masking-squad2">
+                        deepset/bert-large-uncased-whole-word-masking-squad2</option>
+                    <option value="distilbert-base-uncased-distilled-squad">distilbert-base-uncased-distilled-squad
+                    </option>
+                    <option value="rsvp-ai/bertserini-bert-base-squad">rsvp-ai/bertserini-bert-base-squad</option>
+                    <option value="deepset/minilm-uncased-squad2">deepset/minilm-uncased-squad2</option>
+                    <option value="dmis-lab/biobert-large-cased-v1.1-squad">dmis-lab/biobert-large-cased-v1.1-squad
+                    </option>
+                    <option value="deepset/bert-base-cased-squad2">deepset/bert-base-cased-squad2</option>
+                    <option value="bert-large-cased-whole-word-masking-finetuned-squad">
+                        bert-large-cased-whole-word-masking-finetuned-squad</option>
+                </select>
+                <select id="lang" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
+                    <option disabled selected>Input Language</option>
+                    <option value="en">English</option>
+                    <option value="el">Greek</option>
+                </select>
+                <select id="trans" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
+                    <option disabled selected>Translator</option>
+                    <option value="bing">Bing</option>
+                    <option value="helsinki">Helsinki</option>
+                </select>
+                <select id='erm' class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
+                    <option disabled selected>Entity Recognition</option>
+                    <option value="babelfy">Babelfy</option>
+                    <option value="lod">LODsyndesis</option>
+                </select>
             </div>
-
-            <output></output>
+        </div>
+        <!-- For the button to make it large when the window is small -->
+        <div class="w-64 z-40 absolute bg-gray-800 shadow md:h-full flex-col justify-between sm:hidden transition duration-150 ease-in-out"
+            id="mobile-nav">
+            <button aria-label="toggle sidebar" id="openSideBar"
+                class="h-10 w-10 bg-gray-800 absolute right-0 mt-16 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 rounded focus:ring-gray-800"
+                onclick="sidebarHandler(true)">
+                <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg7.svg"
+                    alt="toggler">
+            </button>
+            <button aria-label="Close sidebar" id="closeSideBar"
+                class="hidden h-10 w-10 bg-gray-800 absolute right-0 mt-16 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer text-white"
+                onclick="sidebarHandler(false)">
+                <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg8.svg"
+                    alt="cross">
+            </button>
+            <div class="px-8 h-screen bg-base-200">
+                <div class="h-16 w-full flex items-center mb-28">
+                    <h1 class="font-mono font-bold text-3xl text-primary">Configuration</h1>
+                </div>
+                <!-- Sidebar Content -->
+                <div
+                    class="w-full max-w-xs mb-5 text-sm flex flex-row bg-primary pl-4 items-center rounded-lg h-12 context-small">
+                    <div class="font-semibold text-gray-200 mr-auto">Give Context:</div>
+                    <div class="form-control mr-3">
+                        <input id="context-check-small" type="checkbox" class="toggle toggle-md context-toggle"
+                            checked />
+                    </div>
+                </div>
+                <select id="model-small" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
+                    <option disabled selected>Pick a model</option>
+                    <option value="deepset/roberta-base-squad2">deepset/roberta-base-squad2</option>
+                    <option value="bert-large-uncased-whole-word-masking-finetuned-squad">
+                        bert-large-uncased-whole-word-masking-finetuned-squad</option>
+                    <option value="distilbert-base-cased-distilled-squad">distilbert-base-cased-distilled-squad</option>
+                    <option value="deepset/bert-large-uncased-whole-word-masking-squad2">
+                        deepset/bert-large-uncased-whole-word-masking-squad2</option>
+                    <option value="distilbert-base-uncased-distilled-squad">distilbert-base-uncased-distilled-squad
+                    </option>
+                    <option value="rsvp-ai/bertserini-bert-base-squad">rsvp-ai/bertserini-bert-base-squad</option>
+                    <option value="deepset/minilm-uncased-squad2">deepset/minilm-uncased-squad2</option>
+                    <option value="dmis-lab/biobert-large-cased-v1.1-squad">dmis-lab/biobert-large-cased-v1.1-squad
+                    </option>
+                    <option value="deepset/bert-base-cased-squad2">deepset/bert-base-cased-squad2</option>
+                    <option value="bert-large-cased-whole-word-masking-finetuned-squad">
+                        bert-large-cased-whole-word-masking-finetuned-squad</option>
+                </select>
+                <select id="lang-small" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
+                    <option disabled selected>Input Language</option>
+                    <option value="en">English</option>
+                    <option value="el">Greek</option>
+                </select>
+                <select id="trans-small" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
+                    <option disabled selected>Translator</option>
+                    <option value="en">Bing</option>
+                    <option value="el">Helsinki</option>
+                </select>
+                <select id="erm-small" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
+                    <option disabled selected>Entity Recognition</option>
+                    <option value="en">Babelfy</option>
+                    <option value="el">LODsyndesis</option>
+                </select>
+            </div>
+        </div>
+        <!-- Sidebar ends -->
+        <!-- Main page -->
+        <div class="flex flex-nowrap flex-col w-full">
+            <!-- Header -->
+            <div class="h-16 w-full flex justify-center mt-10 mb-16">
+                <h1 class="font-mono font-semibold text-6xl sm:text-5xl md:text-5xl lg:text-7xl text-primary">Tiresias
+                </h1>
+            </div>
+            <!-- Context -->
+            <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6">
+                <textarea id="context" class="w-full h-full textarea textarea-primary resize-none"
+                    placeholder="Insert context here..."></textarea>
+            </div>
+            <!-- Button container -->
+            <div class="container mx-auto md:w-4/5 w-11/12 px-6 flex flex-row justify-center">
+                <button class="btn-primary btn sm:w-28 md:w-36 text-gray-200 mr-5" id="add-button">Add question</button>
+                <button class="btn-primary btn sm:w-28 md:w-36 text-gray-200 " id="answer-button">Answer
+                    questions</button>
+            </div>
+            <!-- Questions -->
+            <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6 flex flex-col questions-section">
+                <div id="1" class="form-control w-full max-w-xl mb-5 question">
+                    <label class="label question-label">
+                        <span class="label-text text-lg">Question 1</span>
+                    </label>
+                    <input type="text" placeholder="Write a question..."
+                        class="input input-bordered w-full input-question" />
+                    <result class="bg-primary p-3 -mt-1 -z-10 rounded-t-none rounded-b-lg text-gray-200"></result>
+                </div>
+            </div>
         </div>
     </div>
+    </div>
 
-    <a class="up-arrow" href="#header"><i class="fa-solid fa-arrow-up"></i></a>
 </body>
 
 </html>

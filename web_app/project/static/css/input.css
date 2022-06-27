@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.toggle {
+    --tw-bg-opacity: 0.6;
+}
+
+.toggle:checked {
+    --tw-bg-opacity: 0;
+}

@@ -145,10 +145,6 @@ $('#answer-button').on('click', () => {
         addErrorPopup('Please add a context or turn off the \'give context\' option.');
         return;
     }
-    if (haveContext && erm === null) {
-        addErrorPopup('Please select an Entity Recognition Model.');
-        return;
-    }
     if (model === null) {
         addErrorPopup('Please select a Model to answer your questions.');
         return;
@@ -161,6 +157,10 @@ $('#answer-button').on('click', () => {
         addErrorPopup('Please select the Translator to perform the necessary translations for the process.');
         return;
     }
+    if (haveContext && erm === null) {
+        addErrorPopup('Please select an Entity Recognition Model.');
+        return;
+    }
 
     for (let i = 0; i < questionList.length; i++) {
         if (questionList.get(i).value === "") {
@@ -171,6 +171,7 @@ $('#answer-button').on('click', () => {
     // $('load-bar').addClass("loader");
 
     let request = {};
+    if(haveContext === false) context = "";
     request.context = context;
     request.questions = [];
     request.model = model;
@@ -192,8 +193,10 @@ $('#answer-button').on('click', () => {
         success: (answers) => {
             $('load-bar').removeClass("loader");
             i = 0;
-            for (let index in answers) {
-                outputList.get(i).innerText = answers[index];
+            console.log(answers)
+            for (let key in answers) {
+                console.log(key);
+                outputList.get(i).innerText = answers[key].text + " (Score: " + parseFloat(answers[key].conf_score).toFixed(2) + ')';
                 i++;
             }
         },

@@ -31,11 +31,11 @@ def questions_to_contexts(questions):
         if gr_context != '':
             gr_context = translate(gr_context, 'helsinki', 'el', 'en')
             gr_context = '' if gr_context == None else gr_context
-        print('In questions_to_contexts for ', q, ':\n', tmp[-1])
         if en_context == '' and gr_context == '':
             tmp.append(None)
         else:
             tmp.append(gr_context + '\n' + en_context)
+        print('In questions_to_contexts for ', q, ':\n', tmp[-1])
     return tmp
 
 # with open(output_file, 'a', encoding='UTF16') as file:

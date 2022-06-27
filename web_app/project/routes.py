@@ -12,7 +12,6 @@ def answersPage():
     contexts = []
     dict = request.json
     print(dict)
-    return
     answers = {}
     language = dict['lang']
     if language == 'el':
@@ -41,7 +40,7 @@ def answersPage():
         answers['answer' + str(i)] = {'text' : answer, 'conf_score' : conf_score}
     print("server responds...")
     print(answers)
-    return answers
+    return answers, 200
 
 
 @app.route('/about/')

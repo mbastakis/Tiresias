@@ -95,9 +95,41 @@ $('#add-button').on('click', () => {
     });
 });
 
+function clearPopup() {
+    $('#popups').empty();
+}
 
+function addErrorPopup(errorMsg) {
+    let popup = '<div class="absolute z-10 alert alert-error shadow-xl w-1/2 flex mt-8 justify-center">' +
+        '<div>' +
+        '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none"' +
+        'viewBox="0 0 24 24">' +
+        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"' +
+        'd="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />' +
+        '</svg>' +
+        '<span>Error! ' + errorMsg + '</span>' +
+        '</div>' +
+        '</div>';
 
+    $('#popups').append(popup);
+    setTimeout(() => {
+        clearPopup();
+    }, 6000);
+}
 
+function addSucessPopup(successMsg) {
+    let popup = '<div class="absolute z-10 alert alert-success shadow-xl w-1/2 flex mt-8 justify-center">' +
+        '<div>' +
+        '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" ' + 'stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' +
+        '<span>Sucess! ' + successMsg + '</span>' +
+        '</div>' +
+        '</div>';
+
+    $('#popups').append(popup);
+    setTimeout(() => {
+        clearPopup();
+    }, 6000);
+}
 
 $('#answer-button').on('click', () => {
     let outputList = $('result');
@@ -110,29 +142,29 @@ $('#answer-button').on('click', () => {
 
     // Error checking, prerequisite for the ajax request.
     if (haveContext && context === "") {
-        alert('Please add a context or switch off the give context option.');
+        addErrorPopup('Please add a context or turn off the \'give context\' option.');
         return;
     }
     if (haveContext && erm === null) {
-        alert('Please select an Entity Recognition Model.');
+        addErrorPopup('Please select an Entity Recognition Model.');
         return;
     }
     if (model === null) {
-        alert('Please select a Model to answer your questions.');
+        addErrorPopup('Please select a Model to answer your questions.');
         return;
     }
     if (lang === null) {
-        alert('Please select the language of the questions and the context.');
+        addErrorPopup('Please select the language of the questions and the context.');
         return;
     }
     if (trans === null) {
-        alert('Please select the Translator to perform the necessary translations for the process.');
+        addErrorPopup('Please select the Translator to perform the necessary translations for the process.');
         return;
     }
 
     for (let i = 0; i < questionList.length; i++) {
         if (questionList.get(i).value === "") {
-            alert('Question ' + (i + 1) + ' is empty, please remove this question or input a question');
+            addErrorPopup('Question ' + (i + 1) + ' is empty, please remove this question or input a question');
             return;
         }
     }

@@ -42,13 +42,13 @@ $('.context-toggle').on('click', function () {
     if (isOn) {
         $('#erm').hide();
         $('#erm-small').hide();
-        $('#context').hide();
+        $('.context-container').hide();
         $(this).prop('checked', false);
         haveContext = false;
     } else {
         $('#erm').show();
         $('#erm-small').show();
-        $('#context').show();
+        $('.context-container').show();
         $(this).prop('checked', true);
         haveContext = true;
     }
@@ -108,8 +108,35 @@ $('#answer-button').on('click', () => {
     let trans = $('#trans').val();
     let erm = $('#erm').val();
 
-    // $('load-bar').addClass("loader");
+    // Error checking, prerequisite for the ajax request.
+    if (haveContext && context === "") {
+        alert('Please add a context or switch off the give context option.');
+        return;
+    }
+    if (haveContext && erm === null) {
+        alert('Please select an Entity Recognition Model.');
+        return;
+    }
+    if (model === null) {
+        alert('Please select a Model to answer your questions.');
+        return;
+    }
+    if (lang === null) {
+        alert('Please select the language of the questions and the context.');
+        return;
+    }
+    if (trans === null) {
+        alert('Please select the Translator to perform the necessary translations for the process.');
+        return;
+    }
 
+    for (let i = 0; i < questionList.length; i++) {
+        if (questionList.get(i).value === "") {
+            alert('Question ' + (i + 1) + ' is empty, please remove this question or input a question');
+            return;
+        }
+    }
+    // $('load-bar').addClass("loader");
 
     let request = {};
     request.context = context;
@@ -118,6 +145,7 @@ $('#answer-button').on('click', () => {
     request.lang = lang;
     request.trans = trans;
     request.erm = erm;
+    request.haveContext = haveContext;
 
     for (let i = 0; i < questionList.length; i++) {
         request.questions.push(questionList.get(i).value);

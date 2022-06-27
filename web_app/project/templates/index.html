@@ -116,13 +116,13 @@
                 </select>
                 <select id="trans-small" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
                     <option disabled selected>Translator</option>
-                    <option value="en">Bing</option>
-                    <option value="el">Helsinki</option>
+                    <option value="bing">Bing</option>
+                    <option value="helsinki">Helsinki</option>
                 </select>
                 <select id="erm-small" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
                     <option disabled selected>Entity Recognition</option>
-                    <option value="en">Babelfy</option>
-                    <option value="el">LODsyndesis</option>
+                    <option value="babelfy">Babelfy</option>
+                    <option value="lod">LODsyndesis</option>
                 </select>
             </div>
         </div>
@@ -135,18 +135,18 @@
                 </h1>
             </div>
             <!-- Context -->
-            <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6">
+            <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6 context-container">
                 <textarea id="context" class="w-full h-full textarea textarea-primary resize-none"
                     placeholder="Insert context here..."></textarea>
             </div>
             <!-- Button container -->
-            <div class="container mx-auto md:w-4/5 w-11/12 px-6 flex flex-row justify-center">
+            <div class=" mx-auto md:w-4/5 w-11/12 px-6 flex flex-row justify-center button-container">
                 <button class="btn-primary btn sm:w-28 md:w-36 text-gray-200 mr-5" id="add-button">Add question</button>
                 <button class="btn-primary btn sm:w-28 md:w-36 text-gray-200 " id="answer-button">Answer
                     questions</button>
             </div>
             <!-- Questions -->
-            <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6 flex flex-col questions-section">
+            <div class=" mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6 flex flex-col questions-section">
                 <div id="1" class="form-control w-full max-w-xl mb-5 question">
                     <label class="label question-label">
                         <span class="label-text text-lg">Question 1</span>

@@ -6,6 +6,33 @@ sideBar.style.transform = "translateX(-260px)";
 var questionCounter = 1
 var haveContext = true
 
+// For info cards
+var info_card = $('#info-card');
+var toggled_card = false
+var hovering_card = false
+const onMouseMove = (e) => {
+    info_card.css('left', e.pageX - info_card.width());
+    info_card.css('top', e.pageY - info_card.height());
+}
+// End For info cards
+
+function fillInfoCard(conf_score, source_link, src_lang, model_resp_time) {
+    $("#conf_score").text(conf_score);
+    $("#source_link").attr("href", source_link);
+    $("#src-lang").text(src_lang);
+    $("#model-resp-time").text(model_resp_time);
+}
+
+
+$(document).on('click', (e) => {
+    if (!hovering_card) {
+        if (toggled_card) {
+            document.removeEventListener('mousemove', onMouseMove);
+            info_card.hide();
+            toggled_card = false;
+        }
+    }
+});
 
 function sidebarHandler(flag) {
     if (flag) {
@@ -75,14 +102,7 @@ $('#add-button').on('click', () => {
         '<div class="w-full flex flex-col">' +
         '<input type="text" placeholder="Write a question..."' +
         'class="input input-bordered w-full input-question" />' +
-        '<result class="bg-primary p-3 -mt-1 -z-10 rounded-t-none rounded-b-lg text-gray-200">' +
-        '<span>' +
-        '<svg style="fill: #F2F2F2; z-index: 10;" class="relative ml-auto h-6 fill-gray-200"' +
-        'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">' +
-        '<path' +
-        ' d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 128c17.67 0 32 14.33 32 32c0 17.67-14.33 32-32 32S224 177.7 224 160C224 142.3 238.3 128 256 128zM296 384h-80C202.8 384 192 373.3 192 360s10.75-24 24-24h16v-64H224c-13.25 0-24-10.75-24-24S210.8 224 224 224h32c13.25 0 24 10.75 24 24v88h16c13.25 0 24 10.75 24 24S309.3 384 296 384z" />' +
-        '</svg>' +
-        '</span>' +
+        '<result class="bg-primary p-3 -mt-1 rounded-t-none rounded-b-lg text-gray-200">' +
         '</result>' +
         '</div>' +
         '</div>' +
@@ -107,8 +127,6 @@ $('#add-button').on('click', () => {
             $(question_list.get(i))[0].innerHTML = '<span class="label-text text-lg">Question ' + (i + 1) + '</span>';
         }
     });
-
-    $('.')
 });
 
 function clearPopup() {
@@ -116,7 +134,7 @@ function clearPopup() {
 }
 
 function addErrorPopup(errorMsg) {
-    let popup = '<div class="absolute z-10 alert alert-error shadow-xl w-1/2 flex mt-8 justify-center">' +
+    let popup = '<div class="absolute z-10 alert alert-error shadow-xl md:w-1/2 w-8/12 flex mt-8 justify-center">' +
         '<div>' +
         '<svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none"' +
         'viewBox="0 0 24 24">' +
@@ -147,8 +165,58 @@ function addSucessPopup(successMsg) {
     }, 6000);
 }
 
+function writeResults(questionIndex, answer, conf_score, link, lang, resp_time) {
+    $('result').get(questionIndex - 1).innerText = answer;
+    // Add element to dom
+    $('#' + questionIndex + ' result').append(
+        '<span class=" z-10 ">' +
+        '<svg id="info-' + questionIndex + '" style="fill: #F2F2F2; z-index: 20;"' +
+        'class="info-card hover:cursor-pointer relative ml-auto h-6 fill-gray-200"' +
+        'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">' +
+        '<path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 128c17.67 0 32 14.33 32 32c0 17.67-14.33 32-32 32S224 177.7 224 160C224 142.3 238.3 128 256 128zM296 384h-80C202.8 384 192 373.3 192 360s10.75-24 24-24h16v-64H224c-13.25 0-24-10.75-24-24S210.8 224 224 224h32c13.25 0 24 10.75 24 24v88h16c13.25 0 24 10.75 24 24S309.3 384 296 384z"/>' +
+        '</svg>' +
+        '</span>'
+    );
+    // Add listener to the element
+    $("#info-" + questionCounter).on({
+        mouseenter: function () {
+            // Detect info card
+            infoCardIndex = (this.id.replace("info-", "") - 1);
+            fillInfoCard(
+                conf_score,
+                link,
+                lang,
+                resp_time
+            );
+
+            hovering_card = true;
+            if (toggled_card == false) {
+                document.addEventListener('mousemove', onMouseMove);
+                info_card.show();
+            }
+        },
+        click: function () {
+            if (toggled_card == false) {
+                document.removeEventListener('mousemove', onMouseMove);
+                toggled_card = true;
+            } else {
+                document.addEventListener('mousemove', onMouseMove);
+                toggled_card = false;
+            }
+        },
+        mouseleave: function () {
+            hovering_card = false;
+            if (toggled_card == false) {
+                document.removeEventListener('mousemove', onMouseMove);
+                info_card.hide();
+            }
+        }
+    });
+    // Fill the element
+    fillInfoCard(conf_score, link, lang, resp_time);
+}
+
 $('#answer-button').on('click', () => {
-    let outputList = $('result');
     let questionList = $('.input-question');
     let context = $('#context').val();
     let model = $('#model').val();
@@ -212,7 +280,7 @@ $('#answer-button').on('click', () => {
             console.log(answers)
             for (let key in answers) {
                 console.log(key);
-                outputList.get(i).innerText = answers[key].text + " (Score: " + parseFloat(answers[key].conf_score).toFixed(2) + ')';
+                // writeResults(1, 'O theos tis fwtias', 0.92, 'link', 'el', 10.65); do something like this.
                 i++;
             }
         },

@@ -6,6 +6,7 @@ sideBar.style.transform = "translateX(-260px)";
 var questionCounter = 1
 var haveContext = true
 
+
 function sidebarHandler(flag) {
     if (flag) {
         sideBar.style.transform = "translateX(0px)";
@@ -40,14 +41,14 @@ $('.context-toggle').on('click', function () {
     let isOn = !$(this).is(":checked");
 
     if (isOn) {
-        $('#erm').hide();
-        $('#erm-small').hide();
+        $('#erm').show();
+        $('#erm-small').show();
         $('.context-container').hide();
         $(this).prop('checked', false);
         haveContext = false;
     } else {
-        $('#erm').show();
-        $('#erm-small').show();
+        $('#erm').hide();
+        $('#erm-small').hide();
         $('.context-container').show();
         $(this).prop('checked', true);
         haveContext = true;
@@ -66,18 +67,31 @@ $('#add-button').on('click', () => {
     questionCounter++;
 
     $questions.append(
-        '<div id = "' + questionCounter + '" class="flex flex-row items-center ">' +
-        '<div class="form-control w-full max-w-xl mb-5" >' +
+        '<div id="' + questionCounter + '" class="flex flex-row items-center">' +
+        '<div class="form-control w-full mb-5">' +
         '<label class="label question-label">' +
-        '<span class="label-text text-lg">Question ' + (questionCounter) + '</span>' +
+        '<span class="label-text text-lg">Question ' + questionCounter + ' </span>' +
         '</label>' +
         '<div class="w-full flex flex-col">' +
-        '<input type="text" placeholder="Write a question..." class="input input-bordered w-full input-question" />' +
-        '<result class="bg-primary p-3 -mt-1 -z-10 rounded-t-none rounded-b-lg text-gray-200"></result>' +
+        '<input type="text" placeholder="Write a question..."' +
+        'class="input input-bordered w-full input-question" />' +
+        '<result class="bg-primary p-3 -mt-1 -z-10 rounded-t-none rounded-b-lg text-gray-200">' +
+        '<span>' +
+        '<svg style="fill: #F2F2F2; z-index: 10;" class="relative ml-auto h-6 fill-gray-200"' +
+        'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">' +
+        '<path' +
+        ' d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 128c17.67 0 32 14.33 32 32c0 17.67-14.33 32-32 32S224 177.7 224 160C224 142.3 238.3 128 256 128zM296 384h-80C202.8 384 192 373.3 192 360s10.75-24 24-24h16v-64H224c-13.25 0-24-10.75-24-24S210.8 224 224 224h32c13.25 0 24 10.75 24 24v88h16c13.25 0 24 10.75 24 24S309.3 384 296 384z" />' +
+        '</svg>' +
+        '</span>' +
+        '</result>' +
         '</div>' +
         '</div>' +
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" id="remove-' + questionCounter + '" class="mt-5 h-5 ml-4 hover:cursor-pointer"><path d="M135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69zM394.8 466.1C393.2 492.3 372.3 512 346.9 512H101.1C75.75 512 54.77 492.3 53.19 466.1L31.1 128H416L394.8 466.1z" /></svg>' +
-        '</div >'
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" id="remove-' + questionCounter + '"' +
+        'class="mt-5 h-5 ml-4 hover:cursor-pointer">' +
+        '<path' +
+        ' d="M135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69zM394.8 466.1C393.2 492.3 372.3 512 346.9 512H101.1C75.75 512 54.77 492.3 53.19 466.1L31.1 128H416L394.8 466.1z" />' +
+        '</svg>' +
+        '</div>'
     );
 
     question_list = $('.question-label');
@@ -93,6 +107,8 @@ $('#add-button').on('click', () => {
             $(question_list.get(i))[0].innerHTML = '<span class="label-text text-lg">Question ' + (i + 1) + '</span>';
         }
     });
+
+    $('.')
 });
 
 function clearPopup() {
@@ -157,7 +173,7 @@ $('#answer-button').on('click', () => {
         addErrorPopup('Please select the Translator to perform the necessary translations for the process.');
         return;
     }
-    if (haveContext && erm === null) {
+    if (!haveContext && erm === null) {
         addErrorPopup('Please select an Entity Recognition Model.');
         return;
     }
@@ -171,7 +187,7 @@ $('#answer-button').on('click', () => {
     // $('load-bar').addClass("loader");
 
     let request = {};
-    if(haveContext === false) context = "";
+    if (haveContext === false) context = "";
     request.context = context;
     request.questions = [];
     request.model = model;

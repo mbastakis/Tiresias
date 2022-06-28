@@ -58,7 +58,7 @@
                     <option value="bing">Bing</option>
                     <option value="helsinki">Helsinki</option>
                 </select>
-                <select id='erm' class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
+                <select id='erm' class="select w-full max-w-xs bg-primary text-gray-200 mb-5 hidden">
                     <option disabled selected>Entity Recognition</option>
                     <option value="babelfy">Babelfy</option>
                     <option value="lod">LODsyndesis</option>
@@ -121,7 +121,7 @@
                     <option value="bing">Bing</option>
                     <option value="helsinki">Helsinki</option>
                 </select>
-                <select id="erm-small" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
+                <select id="erm-small" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 hidden">
                     <option disabled selected>Entity Recognition</option>
                     <option value="babelfy">Babelfy</option>
                     <option value="lod">LODsyndesis</option>
@@ -133,7 +133,9 @@
         <div class="flex flex-nowrap flex-col w-full">
             <!-- Header -->
             <div class="h-16 w-full flex justify-center mt-10 mb-16">
-                <h1 class="font-mono font-semibold text-6xl sm:text-5xl md:text-5xl lg:text-7xl text-primary">Tiresias
+                <h1
+                    class="font-mono font-semibold text-6xl sm:text-5xl md:text-5xl lg:text-7xl text-primary hover:cursor-pointer">
+                    Tiresias
                 </h1>
             </div>
             <!-- Context -->
@@ -149,13 +151,21 @@
             </div>
             <!-- Questions -->
             <div class=" mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6 flex flex-col questions-section">
-                <div id="1" class="form-control w-full max-w-xl mb-5 question">
+                <div id="1" class="form-control w-full  mb-5 question">
                     <label class="label question-label">
                         <span class="label-text text-lg">Question 1</span>
                     </label>
                     <input type="text" placeholder="Write a question..."
                         class="input input-bordered w-full input-question" />
-                    <result class="bg-primary p-3 -mt-1 -z-10 rounded-t-none rounded-b-lg text-gray-200"></result>
+                    <result class="bg-primary p-3 -mt-1 -z-10 rounded-t-none rounded-b-lg text-gray-200">
+                        <span class=" z-10 ">
+                            <svg style="fill: #F2F2F2;" class="relative ml-auto h-6 fill-gray-200"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path
+                                    d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 128c17.67 0 32 14.33 32 32c0 17.67-14.33 32-32 32S224 177.7 224 160C224 142.3 238.3 128 256 128zM296 384h-80C202.8 384 192 373.3 192 360s10.75-24 24-24h16v-64H224c-13.25 0-24-10.75-24-24S210.8 224 224 224h32c13.25 0 24 10.75 24 24v88h16c13.25 0 24 10.75 24 24S309.3 384 296 384z" />
+                            </svg>
+                        </span>
+                    </result>
                 </div>
             </div>
         </div>

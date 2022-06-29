@@ -17,10 +17,22 @@ const onMouseMove = (e) => {
 // End For info cards
 
 function fillInfoCard(conf_score, source_link, src_lang, model_resp_time) {
-    $("#conf_score").text(conf_score);
-    $("#source_link").attr("href", source_link);
+    $("#conf_score").text(conf_score.toFixed(2));
+    if (source_link == '') {
+        $("#source_link").text('Context');
+        $("#source_link").removeClass('underline');
+        $("#source_link").removeClass('text-blue-200');
+        $("#source_link").addClass('text-pink-200');
+        $("#source_link").attr("href", '');
+    } else {
+        $("#source_link").attr("href", source_link);
+        $("#source_link").text('Original text:');
+        $("#source_link").addClass('underline');
+        $("#source_link").addClass('text-blue-200');
+        $("#source_link").removeClass('text-pink-200');
+    }
     $("#src-lang").text(src_lang);
-    $("#model-resp-time").text(model_resp_time);
+    $("#model-resp-time").text(model_resp_time.toFixed(1));
 }
 
 
@@ -178,7 +190,7 @@ function writeResults(questionIndex, answer, conf_score, link, lang, resp_time) 
         '</span>'
     );
     // Add listener to the element
-    $("#info-" + questionCounter).on({
+    $("#info-" + questionIndex).on({
         mouseenter: function () {
             // Detect info card
             infoCardIndex = (this.id.replace("info-", "") - 1);
@@ -213,7 +225,27 @@ function writeResults(questionIndex, answer, conf_score, link, lang, resp_time) 
         }
     });
     // Fill the element
+    lang = lang == 'el' ? 'Greek' : 'English';
     fillInfoCard(conf_score, link, lang, resp_time);
+}
+
+function clearResults() {
+    for (let i = 1; i <= questionCounter; i++) {
+        $('result').get(i - 1).innerHTML = "";
+        // $('#' + i + ' result').remove();
+    }
+}
+
+function hideDeletButtons() {
+    for (let i = 1; i <= questionCounter; i++) {
+        $('#remove-' + i).hide();
+    }
+}
+
+function showDeleteButtons() {
+    for (let i = 1; i <= questionCounter; i++) {
+        $('#remove-' + i).show();
+    }
 }
 
 $('#answer-button').on('click', () => {
@@ -253,6 +285,8 @@ $('#answer-button').on('click', () => {
         }
     }
     // $('load-bar').addClass("loader");
+    clearResults();
+
 
     let request = {};
     if (haveContext === false) context = "";
@@ -268,6 +302,7 @@ $('#answer-button').on('click', () => {
         request.questions.push(questionList.get(i).value);
     }
 
+    hideDeletButtons();
     $.ajax({
         type: 'POST',
         contentType: 'application/json',
@@ -276,16 +311,24 @@ $('#answer-button').on('click', () => {
         url: 'http://127.0.0.1:5000/questions',
         success: (answers) => {
             $('load-bar').removeClass("loader");
-            i = 0;
-            console.log(answers)
+            showDeleteButtons();
+            i = 1;
             for (let key in answers) {
-                console.log(key);
-                // writeResults(1, 'O theos tis fwtias', 0.92, 'link', 'el', 10.65); do something like this.
+                writeResults(
+                    i,
+                    answers[key].text,
+                    answers[key].conf_score,
+                    answers[key].source_link,
+                    answers[key].source_lang,
+                    answers[key].model_resp_time
+                );
                 i++;
             }
         },
         error: (e) => {
+            showDeleteButtons();
             $('load-bar').removeClass("loader");
+            addErrorPopup('An error occured while answering your questions.');
             console.log(e);
         }
     });

@@ -10,6 +10,8 @@ def homePage():
 def answersPage():
     questions = []
     contexts = []
+    links = []
+    text_indexes = []
     dict = request.json
     print(dict)
     answers = {}
@@ -20,24 +22,46 @@ def answersPage():
         questions = dict['questions']
 
     if dict['context'] == '':
-        contexts = controller.questions_to_contexts(questions)
+        contexts, links, text_indexes = controller.questions_to_contexts(questions)
     else:
         if language == 'el':
             contexts.append(controller.translate_context(dict['context']))
         else:
             contexts.append(dict['context'])
 
+
     for i in range(len(questions)):
-        print('test')
+        answer = ''
+        conf_score = ''
+        source_link = ''
+        source_lang = language
+        model_resp_time = ''
+        start = ''
+        end = ''
         if dict['context'] == '':
             if contexts[i] == None:
                 answer = None
                 conf_score = None
+                model_resp_time = None
+                source_link = None
+                model_resp_time = None
+                start = None
+                end = None
             else:
-                answer, conf_score = controller.answer_question(contexts[i], questions[i], dict["model"], language)
+                answer, conf_score, model_resp_time, start, end = controller.answer_question(contexts[i], questions[i], dict["model"], language)
+                source_lang = 'en' if text_indexes[i] <= start else 'el'
+                source_link = links[i][0 if source_lang == 'el' else 1]
         else:
-            answer, conf_score = controller.answer_question(contexts[0], questions[i], dict["model"], language)
-        answers['answer' + str(i)] = {'text' : answer, 'conf_score' : conf_score}
+            answer, conf_score, model_resp_time, start, end = controller.answer_question(contexts[0], questions[i], dict["model"], language)
+        answers['answer' + str(i)] = {
+            'text' : answer, 
+            'conf_score' : conf_score, 
+            'source_link': source_link, 
+            'source_lang': source_lang, 
+            'model_resp_time': model_resp_time,
+            'start': start,
+            'end': end
+            }
     print("server responds...")
     print(answers)
     return answers, 200

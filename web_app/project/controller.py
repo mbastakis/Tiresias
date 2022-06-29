@@ -3,15 +3,19 @@ import csv, json, requests
 from project.utils.translator import translate
 from transformers import pipeline
 import project.utils.erm as erm
+import time
+
 
 def answer_question(context, question, model, lang):
     print('in answer question: ', context, question)
+    start = time.time()
     question_answerer = pipeline(task="question-answering", model = model)
     qa = question_answerer(question = question, context = context)
+    end = time.time()
     if lang == 'el':
-        return translate(qa['answer'], 'helsinki', 'en', 'el'), qa['score']
+        return translate(qa['answer'], 'helsinki', 'en', 'el'), qa['score'], (end - start), qa['start'], qa['end']
     else:
-        return qa['answer'], qa['score']
+        return qa['answer'], qa['score'], (end - start), qa['start'], qa['end']
 
 def translate_questions(questions):
     translated_questions = []
@@ -24,19 +28,24 @@ def translate_context(context):
 
 def questions_to_contexts(questions):
     tmp = []
+    links = []
+    text_indexes = []
     for q in questions:
         print('in questions_to_contexts current question: ', q)
-        gr_context = erm.get_context(q, 'el')
-        en_context = erm.get_context(q, 'en')
+        gr_context, gr_link = erm.get_context(q, 'el');
+        en_context, en_link = erm.get_context(q, 'en');
+        links.append([gr_link, en_link]);
         if gr_context != '':
-            gr_context = translate(gr_context, 'helsinki', 'el', 'en')
-            gr_context = '' if gr_context == None else gr_context
+            gr_context = translate(gr_context, 'helsinki', 'el', 'en');
+            gr_context = '' if gr_context == None else gr_context;
         if en_context == '' and gr_context == '':
-            tmp.append(None)
+            tmp.append(None);
+            text_indexes.append(0)
         else:
-            tmp.append(gr_context + '\n' + en_context)
-        print('In questions_to_contexts for ', q, ':\n', tmp[-1])
-    return tmp
+            text_indexes.append(len(gr_context) - 1);
+            tmp.append(gr_context + '\n' + en_context);
+        print('In questions_to_contexts for ', q, ':\n', tmp[-1]);
+    return tmp, links, text_indexes
 
 # with open(output_file, 'a', encoding='UTF16') as file:
 #     writer = csv.writer(file)

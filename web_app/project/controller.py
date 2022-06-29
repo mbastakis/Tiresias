@@ -31,9 +31,11 @@ def questions_to_contexts(questions):
     links = []
     text_indexes = []
     for q in questions:
-        print('in questions_to_contexts current question: ', q)
+        print('Searhing context from question:', q)
         gr_context, gr_link = erm.get_context(q, 'el');
         en_context, en_link = erm.get_context(q, 'en');
+        
+
         links.append([gr_link, en_link]);
         if gr_context != '':
             gr_context = translate(gr_context, 'helsinki', 'el', 'en');
@@ -44,7 +46,6 @@ def questions_to_contexts(questions):
         else:
             text_indexes.append(len(gr_context) - 1);
             tmp.append(gr_context + '\n' + en_context);
-        print('In questions_to_contexts for ', q, ':\n', tmp[-1]);
     return tmp, links, text_indexes
 
 # with open(output_file, 'a', encoding='UTF16') as file:

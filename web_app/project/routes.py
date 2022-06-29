@@ -12,19 +12,34 @@ def answersPage():
     contexts = []
     links = []
     text_indexes = []
-    dict = request.json
-    print(dict)
     answers = {}
+
+    dict = request.json
+    print("Request Dictionary: " +dict)
     language = dict['lang']
-    if language == 'el':
+    haveContext = dict['haveContext']
+    
+    # Step 1
+    # Check if the questions are in english or in greek.
+    # If they are in greek translate them.
+    if language not 'en':
+        print('Translating questions: ', dict['questions'])
         questions = controller.translate_questions(dict['questions'])
     else:
         questions = dict['questions']
+    print('Final Questions: ', questions)
 
-    if dict['context'] == '':
+    # Step 2
+    # Check if we have a context.
+    # If we don't run ERM
+    # If we do translate context if needed
+    if not haveContext:
+        print("Searching for context")
         contexts, links, text_indexes = controller.questions_to_contexts(questions)
     else:
-        if language == 'el':
+        links = None
+        text_indexes = None
+        if language not 'en':
             contexts.append(controller.translate_context(dict['context']))
         else:
             contexts.append(dict['context'])

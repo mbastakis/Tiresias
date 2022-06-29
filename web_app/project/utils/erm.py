@@ -18,5 +18,5 @@ def get_context(question, lang):
     sparql.setReturnFormat(JSON)
     result = sparql.query().convert()
     context = result["results"]["bindings"][0]["text"]["value"]
-    print(entity)
+    
     return context, entity

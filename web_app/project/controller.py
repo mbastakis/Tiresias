@@ -55,7 +55,7 @@ def questions_to_contexts(questions):
             contexts.append(gr_context + '\n' + en_context)
             text_indexes.append(len(gr_context) - 1)
             links.append([gr_link, en_link])
-        print('Got context: ' + contexts[-1] + '\n\nLinks: ' + links[-1][0] + '\n       ' + links[-1][1] + '\nText Indice: ' + text_indexes[-1])
+        print('Got context:', contexts[-1], '\n\nLinks:', links[-1][0], '\n      ', links[-1][1], '\nText Indice: ', str(text_indexes[-1])) if text_indexes[-1] != None else None
     return contexts, links, text_indexes
 
 # with open(output_file, 'a', encoding='UTF16') as file:

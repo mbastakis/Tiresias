@@ -27,26 +27,36 @@ def translate_context(context):
     return translate(context, 'helsinki', 'el', 'en')
 
 def questions_to_contexts(questions):
-    tmp = []
+    contexts = []
     links = []
     text_indexes = []
     for q in questions:
         print('Searhing context from question:', q)
+        # Check if the question was translated correctly.
+        if q == None:
+            contexts.append(None)
+            links.append(None)
+            text_indexes.append(None)
+            continue
+        # Get context from the question, in English and in Greek.
         gr_context, gr_link = erm.get_context(q, 'el');
         en_context, en_link = erm.get_context(q, 'en');
-        
 
-        links.append([gr_link, en_link]);
+        # Translate the greek context
         if gr_context != '':
-            gr_context = translate(gr_context, 'helsinki', 'el', 'en');
-            gr_context = '' if gr_context == None else gr_context;
+            gr_context = translate(gr_context, 'helsinki', 'el', 'en')
+            gr_context = '' if gr_context == None else gr_context
+        # If we didn't find any context
         if en_context == '' and gr_context == '':
-            tmp.append(None);
-            text_indexes.append(0)
+            contexts.append(None);
+            text_indexes.append(None)
+            links.append(None)
         else:
-            text_indexes.append(len(gr_context) - 1);
-            tmp.append(gr_context + '\n' + en_context);
-    return tmp, links, text_indexes
+            contexts.append(gr_context + '\n' + en_context)
+            text_indexes.append(len(gr_context) - 1)
+            links.append([gr_link, en_link])
+        print('Got context: ' + contexts[-1] + '\n\nLinks: ' + links[-1][0] + '\n       ' + links[-1][1] + '\nText Indice: ' + text_indexes[-1])
+    return contexts, links, text_indexes
 
 # with open(output_file, 'a', encoding='UTF16') as file:
 #     writer = csv.writer(file)

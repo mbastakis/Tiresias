@@ -8,26 +8,29 @@ def homePage():
 
 @app.route('/questions', methods=['POST'])  
 def answersPage():
-    questions = []
-    contexts = []
-    links = []
-    text_indexes = []
-    answers = {}
+    f_questions = []
+    f_contexts = []
+    f_links = []
+    f_text_indexes = []
+    f_answers = {}
 
     dict = request.json
-    print("Request Dictionary: " +dict)
+    print("Request Dictionary:", dict)
+    context = dict['context']
+    questions = dict['questions']
+    model = dict['model']
     language = dict['lang']
     haveContext = dict['haveContext']
     
     # Step 1
     # Check if the questions are in english or in greek.
     # If they are in greek translate them.
-    if language not 'en':
-        print('Translating questions: ', dict['questions'])
-        questions = controller.translate_questions(dict['questions'])
+    if language != 'en':
+        print('Translating questions: ', questions)
+        f_questions = controller.translate_questions(questions)
     else:
-        questions = dict['questions']
-    print('Final Questions: ', questions)
+        f_questions = questions
+    print('Final Questions: ', f_questions)
 
     # Step 2
     # Check if we have a context.
@@ -35,16 +38,18 @@ def answersPage():
     # If we do translate context if needed
     if not haveContext:
         print("Searching for context")
-        contexts, links, text_indexes = controller.questions_to_contexts(questions)
+        f_contexts, f_links, f_text_indexes = controller.questions_to_contexts(f_questions)
     else:
-        links = None
-        text_indexes = None
-        if language not 'en':
-            contexts.append(controller.translate_context(dict['context']))
+        print("We have context")
+        f_links = None
+        f_text_indexes = None
+        if language != 'en':
+            print("Translating context")
+            f_contexts.append(controller.translate_context(context))
         else:
-            contexts.append(dict['context'])
+            f_contexts.append(context)
 
-
+    # Answer question with model and create the dict that will be returned to frontend.
     for i in range(len(questions)):
         answer = ''
         conf_score = ''
@@ -53,22 +58,32 @@ def answersPage():
         model_resp_time = ''
         start = ''
         end = ''
-        if dict['context'] == '':
-            if contexts[i] == None:
+        if not haveContext:
+            if f_contexts[i] == None:
                 answer = None
                 conf_score = None
-                model_resp_time = None
                 source_link = None
+                source_lang = None
                 model_resp_time = None
                 start = None
                 end = None
             else:
-                answer, conf_score, model_resp_time, start, end = controller.answer_question(contexts[i], questions[i], dict["model"], language)
-                source_lang = 'en' if text_indexes[i] <= start else 'el'
-                source_link = links[i][0 if source_lang == 'el' else 1]
+                answer, conf_score, model_resp_time, start, end = controller.answer_question(f_contexts[i], f_questions[i], model, language)
+                source_lang = 'en' if f_text_indexes[i] <= start else 'el'
+                source_link = f_links[i][0 if source_lang == 'el' else 1]
         else:
-            answer, conf_score, model_resp_time, start, end = controller.answer_question(contexts[0], questions[i], dict["model"], language)
-        answers['answer' + str(i)] = {
+            if f_contexts[0] == None or f_questions[i] == None:
+                answer = None
+                conf_score = None
+                source_link = None
+                source_lang = None
+                model_resp_time = None
+                start = None
+                end = None
+            else:
+                answer, conf_score, model_resp_time, start, end = controller.answer_question(f_contexts[0], f_questions[i], model, language)
+        # Add answer to answers dict
+        f_answers['answer' + str(i)] = {
             'text' : answer, 
             'conf_score' : conf_score, 
             'source_link': source_link, 
@@ -78,8 +93,8 @@ def answersPage():
             'end': end
             }
     print("server responds...")
-    print(answers)
-    return answers, 200
+    print(f_answers)
+    return f_answers, 200
 
 
 @app.route('/about/')

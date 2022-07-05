@@ -87,5 +87,3 @@ def translate(input, translator, src='el', dest='en'):
     except Exception as e:
         print("Exception while translating: ",input, ", with translator: ", translator, " : ",e)
         return None
-
-print('end of file')

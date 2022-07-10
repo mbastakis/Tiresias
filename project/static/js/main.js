@@ -308,7 +308,7 @@ $('#answer-button').on('click', () => {
         contentType: 'application/json',
         data: JSON.stringify(request),
         dataType: 'json',
-        url: 'https://tiresias-app.herokuapp.com/questions',
+        url: 'http://127.0.0.1:5000/questions',
         success: (answers) => {
             $('load-bar').removeClass("loader");
             showDeleteButtons();

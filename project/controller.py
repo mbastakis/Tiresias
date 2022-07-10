@@ -42,6 +42,7 @@ def questions_to_contexts(questions):
         gr_context, gr_link = erm.get_context(q, 'el');
         en_context, en_link = erm.get_context(q, 'en');
 
+        gr_context = '' #TODO: remove this line
         # Translate the greek context
         if gr_context != '':
             gr_context = translate(gr_context, 'bing', 'el', 'en')

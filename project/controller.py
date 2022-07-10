@@ -13,18 +13,18 @@ def answer_question(context, question, model, lang):
     qa = question_answerer(question = question, context = context)
     end = time.time()
     if lang == 'el':
-        return translate(qa['answer'], 'helsinki', 'en', 'el'), qa['score'], (end - start), qa['start'], qa['end']
+        return translate(qa['answer'], 'bing', 'en', 'el'), qa['score'], (end - start), qa['start'], qa['end']
     else:
         return qa['answer'], qa['score'], (end - start), qa['start'], qa['end']
 
 def translate_questions(questions):
     translated_questions = []
     for q in questions:
-        translated_questions.append(translate(q, 'helsinki', 'el', 'en'))
+        translated_questions.append(translate(q, 'bing', 'el', 'en'))
     return translated_questions
 
 def translate_context(context):
-    return translate(context, 'helsinki', 'el', 'en')
+    return translate(context, 'bing', 'el', 'en')
 
 def questions_to_contexts(questions):
     contexts = []
@@ -44,7 +44,7 @@ def questions_to_contexts(questions):
 
         # Translate the greek context
         if gr_context != '':
-            gr_context = translate(gr_context, 'helsinki', 'el', 'en')
+            gr_context = translate(gr_context, 'bing', 'el', 'en')
             gr_context = '' if gr_context == None else gr_context
         # If we didn't find any context
         if en_context == '' and gr_context == '':
@@ -66,7 +66,7 @@ def questions_to_contexts(questions):
 #     paragraphs = subject["paragraphs"]
 #     print('\n-------------------------\n')
 #     for QnA in paragraphs:        
-#         en_context = translate(QnA['context'], 'google', 'el', 'en') #TODO: translate with helsinki (care for length limit)
+#         en_context = translate(QnA['context'], 'google', 'el', 'en') #TODO: translate with bing (care for length limit)
 #         print('Context:', en_context)
 #         for qna in QnA["qas"]:
 #             en_question = translate(qna["question"], 'google', 'el', 'en')
@@ -75,7 +75,7 @@ def questions_to_contexts(questions):
 #             question = en_question
 #             for i in range(len(models)):
 #                 result = answer_question(en_context, en_question, models[i])
-#                 results.append([question, models[i], result['score'], result['start'], result['end'], translate(result['answer'], 'helsinki', src='en', dest='el'), qna['answers'][0]['text']])
+#                 results.append([question, models[i], result['score'], result['start'], result['end'], translate(result['answer'], 'bing', src='en', dest='el'), qna['answers'][0]['text']])
 #                 question = ""
 
 #             with open(output_file, 'a', encoding='UTF16') as file:

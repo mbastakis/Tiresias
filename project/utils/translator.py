@@ -1,38 +1,38 @@
 import time
 import translators as ts
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM,pipeline
+# from transformers import AutoTokenizer, AutoModelForSeq2SeqLM,pipeline
 from project.utils.text_splitter import split_to_sentences, split_text
 
-tokenizer_gr_to_en = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-grk-en")
-model_gr_to_en = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-grk-en")
+# tokenizer_gr_to_en = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-grk-en")
+# model_gr_to_en = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-grk-en")
 
-tokenizer_en_to_gr = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-el")
-model_en_to_gr = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-el")
+# tokenizer_en_to_gr = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-en-el")
+# model_en_to_gr = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-en-el")
 
 # Map greek and english words.
 greek_to_english = {}
 
-def translate_sentence_with_helsinki(input, src='el', dest='en'):
-    if ( (src == 'el') and (dest == 'en') ):
-        translation=pipeline("translation",model=model_gr_to_en,tokenizer=tokenizer_gr_to_en)
-    elif ( (src == 'en') and (dest == 'el') ):
-        translation=pipeline("translation",model=model_en_to_gr,tokenizer=tokenizer_en_to_gr)
-    else:
-        raise Exception("Invalid language selection.")
-    return translation(input)[0]['translation_text']
+# def translate_sentence_with_helsinki(input, src='el', dest='en'):
+#     if ( (src == 'el') and (dest == 'en') ):
+#         translation=pipeline("translation",model=model_gr_to_en,tokenizer=tokenizer_gr_to_en)
+#     elif ( (src == 'en') and (dest == 'el') ):
+#         translation=pipeline("translation",model=model_en_to_gr,tokenizer=tokenizer_en_to_gr)
+#     else:
+#         raise Exception("Invalid language selection.")
+#     return translation(input)[0]['translation_text']
 
 
-def helsinki_translate(text, input_lang, output_lang):
-    sentences = split_to_sentences(text)
-    translated_text = ''
-    for sentence in sentences:
-        if(sentence == '..'):
-            translated_text += '..'
-        else:
-            if sentence not in greek_to_english.keys():
-                greek_to_english[sentence] = translate_sentence_with_helsinki(sentence, input_lang, output_lang)
-            translated_text += greek_to_english[sentence]
-    return translated_text.replace('City name (optional, probably does not need a translation)', '')
+# def helsinki_translate(text, input_lang, output_lang):
+#     sentences = split_to_sentences(text)
+#     translated_text = ''
+#     for sentence in sentences:
+#         if(sentence == '..'):
+#             translated_text += '..'
+#         else:
+#             if sentence not in greek_to_english.keys():
+#                 greek_to_english[sentence] = translate_sentence_with_helsinki(sentence, input_lang, output_lang)
+#             translated_text += greek_to_english[sentence]
+#     return translated_text.replace('City name (optional, probably does not need a translation)', '')
 
 
 def request_bing_translation(input, src, dest):
@@ -77,7 +77,7 @@ def bing_translate(input, src='auto', dest='en'):
 
 # Dictionary of functions
 translate_dict = {
-    "helsinki": helsinki_translate,
+    # "helsinki": helsinki_translate,
     "bing": bing_translate
 }
 

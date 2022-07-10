@@ -11,6 +11,17 @@ def homePage():
 
 @main.route('/questions', methods=['POST'])  
 def answersPage():
+    return { 
+        'answer0': {
+            'text' : 'big text here', 
+            'conf_score' : '0.7111', 
+            'source_link': 'a link here', 
+            'source_lang': 'en', 
+            'model_resp_time': '10.5',
+            'start': '222',
+            'end': '225'
+        }
+    }
     f_questions = []
     f_contexts = []
     f_links = []

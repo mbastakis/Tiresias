@@ -1,21 +1,22 @@
 #diaxeirisi post/get request apo ta diafora url paths.
 import csv, json, requests
 from project.utils.translator import translate
-from transformers import pipeline
+# from transformers import pipeline
 import project.utils.erm as erm
 import time
 
 
 def answer_question(context, question, model, lang):
-    print('in answer question: ', context, question)
-    start = time.time()
-    question_answerer = pipeline(task="question-answering", model = model)
-    qa = question_answerer(question = question, context = context)
-    end = time.time()
-    if lang == 'el':
-        return translate(qa['answer'], 'bing', 'en', 'el'), qa['score'], (end - start), qa['start'], qa['end']
-    else:
-        return qa['answer'], qa['score'], (end - start), qa['start'], qa['end']
+    # print('in answer question: ', context, question)
+    # start = time.time()
+    # question_answerer = pipeline(task="question-answering", model = model)
+    # qa = question_answerer(question = question, context = context)
+    # end = time.time()
+    # if lang == 'el':
+    #     return translate(qa['answer'], 'bing', 'en', 'el'), qa['score'], (end - start), qa['start'], qa['end']
+    # else:
+    #     return qa['answer'], qa['score'], (end - start), qa['start'], qa['end']
+    pass
 
 def translate_questions(questions):
     translated_questions = []

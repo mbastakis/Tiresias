@@ -1,7 +1,7 @@
-# import sparknlp
-# from pyspark.ml import PipelineModel
-# from sparknlp.annotator import *
-# from sparknlp.base import *
+import sparknlp
+from pyspark.ml import PipelineModel
+from sparknlp.annotator import *
+from sparknlp.base import *
 
 # spark = sparknlp.start(spark32 = True)
 # documenter = DocumentAssembler().setInputCol("text").setOutputCol("document")
@@ -9,15 +9,19 @@
 # sd_model = LightPipeline(PipelineModel(stages=[documenter, sentencerDL]))
 
 
-# def split_to_sentences(text):
-#     sentences=[]
-#     for anno in sd_model.fullAnnotate(text)[0]["sentences"]:
-#         sentences.append(anno.result)
-#     return sentences
+def split_to_sentences(text):
+    pass
+    # sentences=[]
+    # for anno in sd_model.fullAnnotate(text)[0]["sentences"]:
+    #     sentences.append(anno.result)
+    # return sentences
 
 
 def split_text(text, length_limit):
-    return text
+    f = open("demofile2.txt", "a")
+    f.write(text)
+    f.close()
+    return 'pame re fasoli'
     # sentences = split_to_sentences(text)
     # texts = []
     # char_counter = 0

@@ -1,7 +1,7 @@
 import time
 import translators as ts
 # from transformers import AutoTokenizer, AutoModelForSeq2SeqLM,pipeline
-from project.utils.text_splitter import split_to_sentences, split_text
+from project.utils.text_splitter import split_text #split_to_sentences
 
 # tokenizer_gr_to_en = AutoTokenizer.from_pretrained("Helsinki-NLP/opus-mt-grk-en")
 # model_gr_to_en = AutoModelForSeq2SeqLM.from_pretrained("Helsinki-NLP/opus-mt-grk-en")

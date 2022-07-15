@@ -1,8 +1,8 @@
 #diaxeirisi post/get request apo ta diafora url paths.
 import csv, json, requests
-from project.utils.translator import translate
+from utils.translator import translate
 from transformers import pipeline
-import project.utils.erm as erm
+import utils.erm as erm
 import time
 
 

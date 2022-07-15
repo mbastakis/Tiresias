@@ -1,17 +1,28 @@
-from project import app
-from project import controller
-from flask import render_template, request, Blueprint
+import controller
+from flask import Flask
+from flask import render_template, request
 
 
-main = Blueprint('main', __name__)
+app = Flask(__name__)
 
-@main.route('/')  # Home page
+@app.route('/')  # Home page
 def homePage():
     print('test2')
     return render_template("index.html")
 
-@main.route('/questions', methods=['POST'])  
+@app.route('/questions', methods=['POST'])  
 def answersPage():
+    return {
+        'answer0': {
+            'text' : 'Sparta', 
+            'conf_score' : 0.8254, 
+            'source_link': 'https://www.facebook.com/loukas.mertzanis', 
+            'source_lang': 'el', 
+            'model_resp_time': 13.12,
+            'start': 10,
+            'end': 50
+            }
+    }
     f_questions = []
     f_contexts = []
     f_links = []
@@ -99,3 +110,7 @@ def answersPage():
     print("server responds...")
     print(f_answers)
     return f_answers, 200
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", debug='True')

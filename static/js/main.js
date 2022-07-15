@@ -308,7 +308,7 @@ $('#answer-button').on('click', () => {
         contentType: 'application/json',
         data: JSON.stringify(request),
         dataType: 'json',
-        url: 'http://192.168.1.118:5555/questions',
+        url: 'http://185.234.52.182/questions',
         success: (answers) => {
             $('load-bar').removeClass("loader");
             showDeleteButtons();

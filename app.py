@@ -23,13 +23,15 @@ def answersPage():
     model = dict['model']
     language = dict['lang']
     haveContext = dict['haveContext']
-    
+    # translator = dict['trans']
+    translator = 'helsinki' # TODO remove this line and uncomment this ^
+
     # Step 1
     # Check if the questions are in english or in greek.
     # If they are in greek translate them.
     if language != 'en':
         print('Translating questions: ', questions)
-        f_questions = controller.translate_questions(questions)
+        f_questions = controller.translate_questions(questions, translator)
     else:
         f_questions = questions
     print('Final Questions: ', f_questions)
@@ -40,17 +42,21 @@ def answersPage():
     # If we do translate context if needed
     if not haveContext:
         print("Searching for context")
-        f_contexts, f_links, f_text_indexes = controller.questions_to_contexts(f_questions)
+        f_contexts, f_links, f_text_indexes = controller.questions_to_contexts(f_questions, translator)
     else:
         print("We have context")
         f_links = None
         f_text_indexes = None
         if language != 'en':
             print("Translating context")
-            f_contexts.append(controller.translate_context(context))
+            f_contexts.append(controller.translate_context(context, translator))
         else:
             f_contexts.append(context)
 
+    print('Questions: ', f_questions)
+    print('Context: ', f_contexts)
+    print('Links: ', f_links)
+    print('Indexes: ', f_text_indexes)
     # Answer question with model and create the dict that will be returned to frontend.
     for i in range(len(questions)):
         answer = ''
@@ -70,7 +76,12 @@ def answersPage():
                 start = None
                 end = None
             else:
-                answer, conf_score, model_resp_time, start, end = controller.answer_question(f_contexts[i], f_questions[i], model, language)
+                answer, conf_score, model_resp_time, start, end = controller.answer_question(
+                    f_contexts[i],
+                    f_questions[i],
+                    model,
+                    language,
+                    translator)
                 source_lang = 'en' if f_text_indexes[i] <= start else 'el'
                 source_link = f_links[i][0 if source_lang == 'el' else 1]
         else:
@@ -83,7 +94,21 @@ def answersPage():
                 start = None
                 end = None
             else:
-                answer, conf_score, model_resp_time, start, end = controller.answer_question(f_contexts[0], f_questions[i], model, language)
+                answer, conf_score, model_resp_time, start, end = controller.answer_question(
+                    f_contexts[0], 
+                    f_questions[i], 
+                    model, 
+                    language,
+                    translator)
+        print('For answer ' + str(i))
+        print('Text: ', answer)
+        print('Conf score: ', conf_score)
+        print('Source link: ', source_link)
+        print('Source lang: ', source_lang)
+        print('Response time: ', model_resp_time)
+        print('Start: ', start)
+        print('End: ', end)
+
         # Add answer to answers dict
         f_answers['answer' + str(i)] = {
             'text' : answer, 

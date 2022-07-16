@@ -6,27 +6,30 @@ import utils.erm as erm
 import time
 
 
-def answer_question(context, question, model, lang):
-    print('in answer question: ', context, question)
+def answer_question(context, question, model, lang, translator):
     start = time.time()
     question_answerer = pipeline(task="question-answering", model = model)
     qa = question_answerer(question = question, context = context)
+    print('Model Input:')
+    print('Context: ', context)
+    print('Question: ', question)
+    print('Model Answered: ', qa)
     end = time.time()
     if lang == 'el':
-        return translate(qa['answer'], 'helsinki', 'en', 'el'), qa['score'], (end - start), qa['start'], qa['end']
+        return translate(qa['answer'], translator, 'en', 'el'), qa['score'], (end - start), qa['start'], qa['end']
     else:
         return qa['answer'], qa['score'], (end - start), qa['start'], qa['end']
 
-def translate_questions(questions):
+def translate_questions(questions, translator):
     translated_questions = []
     for q in questions:
-        translated_questions.append(translate(q, 'helsinki', 'el', 'en'))
+        translated_questions.append(translate(q, translator, 'el', 'en'))
     return translated_questions
 
-def translate_context(context):
-    return translate(context, 'helsinki', 'el', 'en')
+def translate_context(context, translator):
+    return translate(context, translator, 'el', 'en')
 
-def questions_to_contexts(questions):
+def questions_to_contexts(questions, translator):
     contexts = []
     links = []
     text_indexes = []
@@ -44,7 +47,7 @@ def questions_to_contexts(questions):
 
         # Translate the greek context
         if gr_context != '':
-            gr_context = translate(gr_context, 'helsinki', 'el', 'en')
+            gr_context = translate(gr_context, translator, 'el', 'en')
             gr_context = '' if gr_context == None else gr_context
         # If we didn't find any context
         if en_context == '' and gr_context == '':
@@ -57,28 +60,3 @@ def questions_to_contexts(questions):
             links.append([gr_link, en_link])
         print('Got context:', contexts[-1], '\n\nLinks:', links[-1][0], '\n      ', links[-1][1], '\nText Indice: ', str(text_indexes[-1])) if text_indexes[-1] != None else None
     return contexts, links, text_indexes
-
-# with open(output_file, 'a', encoding='UTF16') as file:
-#     writer = csv.writer(file)
-#     writer.writerow(headers)
-
-# for subject in data:
-#     paragraphs = subject["paragraphs"]
-#     print('\n-------------------------\n')
-#     for QnA in paragraphs:        
-#         en_context = translate(QnA['context'], 'google', 'el', 'en') #TODO: translate with helsinki (care for length limit)
-#         print('Context:', en_context)
-#         for qna in QnA["qas"]:
-#             en_question = translate(qna["question"], 'google', 'el', 'en')
-            
-#             results = []
-#             question = en_question
-#             for i in range(len(models)):
-#                 result = answer_question(en_context, en_question, models[i])
-#                 results.append([question, models[i], result['score'], result['start'], result['end'], translate(result['answer'], 'helsinki', src='en', dest='el'), qna['answers'][0]['text']])
-#                 question = ""
-
-#             with open(output_file, 'a', encoding='UTF16') as file:
-#                 writer = csv.writer(file)
-#                 for i in range(len(results)):
-#                     writer.writerow(results[i])

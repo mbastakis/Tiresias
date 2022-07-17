@@ -1,7 +1,7 @@
 var sideBar = document.getElementById("mobile-nav");
 var openSidebar = document.getElementById("openSideBar");
 var closeSidebar = document.getElementById("closeSideBar");
-sideBar.style.transform = "translateX(-260px)";
+sideBar.style.transform = "translateX(-320px)";
 
 var questionCounter = 1
 var haveContext = true
@@ -52,7 +52,7 @@ function sidebarHandler(flag) {
         openSidebar.classList.add("hidden");
         closeSidebar.classList.remove("hidden");
     } else {
-        sideBar.style.transform = "translateX(-260px)";
+        sideBar.style.transform = "translateX(-320px)";
         closeSidebar.classList.add("hidden");
         openSidebar.classList.remove("hidden");
     }
@@ -109,11 +109,11 @@ $('#add-button').on('click', () => {
         '<div id="' + questionCounter + '" class="flex flex-row items-center">' +
         '<div class="form-control w-full mb-5">' +
         '<label class="label question-label">' +
-        '<span class="label-text text-lg">Question ' + questionCounter + ' </span>' +
+        '<span class="label-text font-semibold text-lg">Question ' + questionCounter + ' </span>' +
         '</label>' +
         '<div class="w-full flex flex-col">' +
         '<input type="text" placeholder="Write a question..."' +
-        'class="input input-bordered w-full input-question" />' +
+        'class="z-10 input input-bordered w-full input-question" />' +
         '<result class="bg-primary p-3 -mt-1 rounded-t-none rounded-b-lg text-gray-200">' +
         '</result>' +
         '</div>' +
@@ -128,7 +128,7 @@ $('#add-button').on('click', () => {
 
     question_list = $('.question-label');
     for (let i = 0; i < question_list.length; i++) {
-        $(question_list.get(i))[0].innerHTML = '<span class="label-text text-lg">Question ' + (i + 1) + '</span>';
+        $(question_list.get(i))[0].innerHTML = '<span class="label-text font-semibold text-lg">Question ' + (i + 1) + '</span>';
     }
 
     $('#remove-' + questionCounter).on('click', (question) => {
@@ -136,7 +136,7 @@ $('#add-button').on('click', () => {
         $('#' + removeId).remove();
         question_list = $('.question-label');
         for (let i = 0; i < question_list.length; i++) {
-            $(question_list.get(i))[0].innerHTML = '<span class="label-text text-lg">Question ' + (i + 1) + '</span>';
+            $(question_list.get(i))[0].innerHTML = '<span class="label-text font-semibold text-lg">Question ' + (i + 1) + '</span>';
         }
     });
 });
@@ -230,9 +230,16 @@ function writeResults(questionIndex, answer, conf_score, link, lang, resp_time) 
 }
 
 function clearResults() {
-    for (let i = 1; i <= questionCounter; i++) {
-        $('result').get(i - 1).innerHTML = "";
-        // $('#' + i + ' result').remove();
+    results = $('result');
+    for (let i = 1; i <= results.length; i++) {
+        results.get(i - 1).innerHTML = "";
+    }
+}
+
+function startLoading() {
+    results = $('result');
+    for (let i = 1; i <= results.length; i++) {
+        results.get(i - 1).innerHTML = "<div class='loader-line'></div>";
     }
 }
 
@@ -246,6 +253,42 @@ function showDeleteButtons() {
     for (let i = 1; i <= questionCounter; i++) {
         $('#remove-' + i).show();
     }
+}
+
+function disableQuickAccessButtons() {
+    $('#default').addClass("btn-disabled");
+    $('#default-small').addClass("btn-disabled");
+    $('#clear-all').addClass("btn-disabled");
+    $('#clear-all-small').addClass("btn-disabled");
+    $('#clear-questions').addClass("btn-disabled");
+    $('#clear-questions-small').addClass("btn-disabled");
+    for (let i = 1; i <= 6; i++) {
+        $('#ex-' + i).addClass("btn-disabled");
+        $('#ex-small-' + i).addClass("btn-disabled");
+    }
+}
+
+function enableQuickAccessButtons() {
+    $('#default').removeClass("btn-disabled");
+    $('#default-small').removeClass("btn-disabled");
+    $('#clear-all').removeClass("btn-disabled");
+    $('#clear-all-small').removeClass("btn-disabled");
+    $('#clear-questions').removeClass("btn-disabled");
+    $('#clear-questions-small').removeClass("btn-disabled");
+    for (let i = 1; i <= 6; i++) {
+        $('#ex-' + i).removeClass("btn-disabled");
+        $('#ex-small-' + i).removeClass("btn-disabled");
+    }
+}
+
+function disableQuestionButtons() {
+    $('#add-button').addClass("btn-disabled");
+    $('#answer-button').addClass("btn-disabled");
+}
+
+function enableQuestionButtons() {
+    $('#add-button').removeClass("btn-disabled");
+    $('#answer-button').removeClass("btn-disabled");
 }
 
 $('#answer-button').on('click', () => {
@@ -284,8 +327,11 @@ $('#answer-button').on('click', () => {
             return;
         }
     }
-    // $('load-bar').addClass("loader");
+
     clearResults();
+    startLoading();
+    disableQuickAccessButtons();
+    disableQuestionButtons();
 
 
     let request = {};
@@ -307,11 +353,13 @@ $('#answer-button').on('click', () => {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(request),
+        timeout: 120000,
         dataType: 'json',
         url: 'http://tiresias.fun/questions',
         success: (answers) => {
-            $('load-bar').removeClass("loader");
             showDeleteButtons();
+            enableQuickAccessButtons();
+            enableQuestionButtons();
             i = 1;
             for (let key in answers) {
                 writeResults(
@@ -327,9 +375,114 @@ $('#answer-button').on('click', () => {
         },
         error: (e) => {
             showDeleteButtons();
-            $('load-bar').removeClass("loader");
+            clearResults();
+            enableQuickAccessButtons();
+            enableQuestionButtons();
             addErrorPopup('An error occured while answering your questions.');
             console.log(e);
         }
     });
+});
+
+function setDefaultConfiguration() {
+    $('#model').val('bert-large-cased-whole-word-masking-finetuned-squad');
+    $('#model-small').val('bert-large-cased-whole-word-masking-finetuned-squad');
+    $('#lang').val('en');
+    $('#lang-small').val('en');
+    $('#trans').val('helsinki');
+    $('#trans-small').val('helsinki');
+    $('#erm').val('lod');
+    $('#erm-small').val('lod');
+}
+
+function clearQuestions() {
+    // For question 1
+    $('result').get(0).innerHTML = "";
+    $('.input-question').get(0).value = "";
+    // For the other questions
+    for (let i = 1; i <= questionCounter; i++) {
+        $('#remove-' + i).click();
+    }
+}
+// Clear all button
+$('#clear-questions').on('click', clearQuestions);
+$('#clear-questions-small').on('click', clearQuestions);
+
+function clearAll() {
+    $('#model').val('pick');
+    $('#model-small').val('pick');
+    $('#lang').val('pick');
+    $('#lang-small').val('pick');
+    $('#trans').val('pick');
+    $('#trans-small').val('pick');
+    $('#erm').val('pick');
+    $('#erm-small').val('pick');
+
+    $('#context').val('');
+
+    clearQuestions();
+}
+// Clear all button
+$('#clear-all').on('click', clearAll);
+$('#clear-all-small').on('click', clearAll);
+
+// Set default button
+$('#default-small').on('click', setDefaultConfiguration);
+$('#default').on('click', setDefaultConfiguration);
+
+function setExample(lang, context, questions) {
+    // Set app to initial state
+    clearAll();
+    // Set Configuration
+    $('#model').val('bert-large-cased-whole-word-masking-finetuned-squad');
+    $('#model-small').val('bert-large-cased-whole-word-masking-finetuned-squad');
+    $('#lang').val(lang);
+    $('#lang-small').val(lang);
+    $('#trans').val('helsinki');
+    $('#trans-small').val('helsinki');
+    $('#erm').val('lod');
+    $('#erm-small').val('lod');
+
+    // Set Context
+    if ((context === "" && haveContext == true) ||
+        (context !== "" && haveContext == false)) {
+        $('#context-check').click();
+    }
+
+    if (context !== "") {
+        $('#context').val(context);
+    }
+
+    // Set Questions
+    questionCount = questions.length;
+    for (let i = 0; i < questionCount - 1; i++)
+        $('#add-button').click();
+
+    for (let i = 0; i < questionCount; i++) {
+        $('.input-question').get(i).value = questions[i];
+    }
+}
+
+// Set Examples
+examples = [
+    ['en', '',
+        ['Who was Leonidas ?', 'What was the city of Leonidas ?', 'Where did Leonidas die ?']],
+    ['en', '', [1, 2, 3]],
+    ['en', '', [1, 2, 3]],
+    ['en', '', [1, 2, 3]],
+    ['en', '', [1, 2, 3]],
+    ['en', '', [1, 2, 3]]
+];
+
+for (let i = 1; i <= examples.length; i++) {
+    let example = examples[i - 1];
+    $('#ex-' + i).on('click', () => { setExample(example[0], example[1], example[2]) });
+    $('#ex-small-' + i).on('click', () => { setExample(example[0], example[1], example[2]) });
+}
+
+
+// Fix scrolling
+document.addEventListener('scroll', (e) => {
+    $('#sidebar').css('top', window.scrollY + 'px');
+    $('#mobile-nav').css('top', window.scrollY + 'px');
 });

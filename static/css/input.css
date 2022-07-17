@@ -2,12 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
 
 .toggle {
-    --tw-bg-opacity: 0.6;
+    background-color: #035f61;
 }
 
 .toggle:checked {
-    --tw-bg-opacity: 0;
+    background-color: #02b3b6;
+}
+
+.custom-font {
+    font-family: 'Nunito', sans-serif;
+}
+
+.loader-line {
+    width: 100%;
+    height: 2px;
+    position: relative;
+    overflow: hidden;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+}
+
+.loader-line:before {
+    content: "";
+    position: absolute;
+    left: -50%;
+    height: 5px;
+    width: 10%;
+    background-color: whitesmoke;
+    -webkit-animation: lineAnim 1s linear infinite;
+    -moz-animation: lineAnim 1s linear infinite;
+    animation: lineAnim 1s linear infinite;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+}
+
+@keyframes lineAnim {
+    0% {
+        left: -40%;
+    }
+    50% {
+        left: 20%;
+        width: 80%;
+    }
+    100% {
+        left: 100%;
+        width: 100%;
+    }
+}
+
+.custom-line {
+    border-bottom: 2px solid #02b3b6;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #02b3b6;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #035f61;
 }

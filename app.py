@@ -23,8 +23,7 @@ def answersPage():
     model = dict['model']
     language = dict['lang']
     haveContext = dict['haveContext']
-    # translator = dict['trans']
-    translator = 'helsinki' # TODO remove this line and uncomment this ^
+    translator = dict['trans']
 
     # Step 1
     # Check if the questions are in english or in greek.

@@ -11,12 +11,14 @@ def get_context(question, lang):
         entity = resp_text[1].split("\t")[1]
     else:
         return '', ''
+    print('Entity: ', entity)
     sparql = SPARQLWrapper("http://dbpedia.org/sparql")
     sparql.setQuery("SELECT ?text WHERE { <"+entity+"> dbo:abstract ?text .filter(lang(?text)='"+lang+"')}")
 
     # Convert results to JSON format
     sparql.setReturnFormat(JSON)
     result = sparql.query().convert()
+    print(result)
     context = result["results"]["bindings"][0]["text"]["value"]
     
     return context, entity

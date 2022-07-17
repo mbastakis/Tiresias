@@ -177,8 +177,15 @@ function addSucessPopup(successMsg) {
     }, 6000);
 }
 
+function writeResultsError(questionIndex, errorMsg) {
+    $($('result').get(questionIndex - 1)).addClass('bg-error');
+    $('result').get(questionIndex - 1).innerText = 'Error! ' + errorMsg;
+}
+
 function writeResults(questionIndex, answer, conf_score, link, lang, resp_time) {
     $('result').get(questionIndex - 1).innerText = answer;
+    $($('result').get(questionIndex - 1)).addClass(conf_score > 0.65 ? 'bg-success' : 'bg-warning');
+
     // Add element to dom
     $('#' + questionIndex + ' result').append(
         '<span class=" z-10 ">' +
@@ -233,6 +240,9 @@ function clearResults() {
     results = $('result');
     for (let i = 1; i <= results.length; i++) {
         results.get(i - 1).innerHTML = "";
+        $(results.get(i - 1)).removeClass('bg-error');
+        $(results.get(i - 1)).removeClass('bg-success');
+        $(results.get(i - 1)).removeClass('bg-warning');
     }
 }
 
@@ -362,15 +372,20 @@ $('#answer-button').on('click', () => {
             enableQuestionButtons();
             i = 1;
             for (let key in answers) {
-                writeResults(
-                    i,
-                    answers[key].text,
-                    answers[key].conf_score,
-                    answers[key].source_link,
-                    answers[key].source_lang,
-                    answers[key].model_resp_time
-                );
-                i++;
+                console.log(answers[key]);
+                if (answers[key].error != undefined && answers[key].error != null)
+                    writeResultsError(i, answers[key].error);
+                else {
+                    writeResults(
+                        i,
+                        answers[key].text,
+                        answers[key].conf_score,
+                        answers[key].source_link,
+                        answers[key].source_lang,
+                        answers[key].model_resp_time
+                    );
+                    i++;
+                }
             }
         },
         error: (e) => {
@@ -378,7 +393,7 @@ $('#answer-button').on('click', () => {
             clearResults();
             enableQuickAccessButtons();
             enableQuestionButtons();
-            addErrorPopup('An error occured while answering your questions.');
+            addErrorPopup('An unhandled error occured while answering your questions.');
             console.log(e);
         }
     });
@@ -397,8 +412,8 @@ function setDefaultConfiguration() {
 
 function clearQuestions() {
     // For question 1
-    $('result').get(0).innerHTML = "";
     $('.input-question').get(0).value = "";
+    clearResults();
     // For the other questions
     for (let i = 1; i <= questionCounter; i++) {
         $('#remove-' + i).click();
@@ -479,7 +494,6 @@ for (let i = 1; i <= examples.length; i++) {
     $('#ex-' + i).on('click', () => { setExample(example[0], example[1], example[2]) });
     $('#ex-small-' + i).on('click', () => { setExample(example[0], example[1], example[2]) });
 }
-
 
 // Fix scrolling
 document.addEventListener('scroll', (e) => {

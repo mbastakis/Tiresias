@@ -18,7 +18,8 @@ def get_context(question, lang):
     # Convert results to JSON format
     sparql.setReturnFormat(JSON)
     result = sparql.query().convert()
-    print(result)
+    if len(result['results']['bindings']) == 0:
+        return '', ''
     context = result["results"]["bindings"][0]["text"]["value"]
     
     return context, entity

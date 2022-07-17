@@ -7,29 +7,32 @@ import time
 
 
 def answer_question(context, question, model, lang, translator):
-    start = time.time()
-    question_answerer = pipeline(task="question-answering", model = model)
-    qa = question_answerer(question = question, context = context)
     print('Model Input:')
     print('Context: ', context)
     print('Question: ', question)
+    start = time.time()
+    question_answerer = pipeline(task="question-answering", model = model)
+    qa = question_answerer(question = question, context = context)
     print('Model Answered: ', qa)
     end = time.time()
+
     if lang == 'el':
         return translate(qa['answer'], translator, 'en', 'el'), qa['score'], (end - start), qa['start'], qa['end']
     else:
         return qa['answer'], qa['score'], (end - start), qa['start'], qa['end']
 
-def translate_questions(questions, translator):
+def translate_questions(questions, translator, f_errors):
     translated_questions = []
     for q in questions:
         translated_questions.append(translate(q, translator, 'el', 'en'))
+        if translated_questions[-1] == None:
+            f_errors[questions.index(q)] = "Could not translate question."
     return translated_questions
 
 def translate_context(context, translator):
     return translate(context, translator, 'el', 'en')
 
-def questions_to_contexts(questions, translator):
+def questions_to_contexts(questions, translator, f_errors):
     contexts = []
     links = []
     text_indexes = []
@@ -51,6 +54,7 @@ def questions_to_contexts(questions, translator):
             gr_context = '' if gr_context == None else gr_context
         # If we didn't find any context
         if en_context == '' and gr_context == '':
+            f_errors[questions.index(q)] = "Could not detect an entity in the question."
             contexts.append(None);
             text_indexes.append(None)
             links.append(None)

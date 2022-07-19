@@ -113,16 +113,14 @@ $('#add-button').on('click', () => {
         '</label>' +
         '<div class="w-full flex flex-col">' +
         '<input type="text" placeholder="Write a question..."' +
-        'class="z-10 input input-bordered w-full input-question" />' +
-        '<result class="bg-primary p-3 -mt-1 rounded-t-none rounded-b-lg text-gray-200">' +
+        'class="z-10 input bg-slate-100 input-bordered w-full input-question" />' +
+        '<result class="bg-primary p-3 -mt-1 rounded-t-none rounded-b-lg text-white">' +
         '</result>' +
         '</div>' +
         '</div>' +
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" id="remove-' + questionCounter + '"' +
         'class="mt-5 h-5 ml-4 hover:cursor-pointer">' +
-        '<path' +
-        ' d="M135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69zM394.8 466.1C393.2 492.3 372.3 512 346.9 512H101.1C75.75 512 54.77 492.3 53.19 466.1L31.1 128H416L394.8 466.1z" />' +
-        '</svg>' +
+        '<path d="M135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69zM394.8 466.1C393.2 492.3 372.3 512 346.9 512H101.1C75.75 512 54.77 492.3 53.19 466.1L31.1 128H416L394.8 466.1z"/></svg>' +
         '</div>'
     );
 
@@ -187,7 +185,7 @@ function writeResults(questionIndex, answer, conf_score, link, lang, resp_time) 
     $($('result').get(questionIndex - 1)).addClass(conf_score > 0.65 ? 'bg-success' : 'bg-warning');
 
     // Add element to dom
-    $('#' + questionIndex + ' result').append(
+    $($('result').get(questionIndex - 1)).append(
         '<span class=" z-10 ">' +
         '<svg id="info-' + questionIndex + '" style="fill: #F2F2F2; z-index: 20;"' +
         'class="info-card hover:cursor-pointer relative ml-auto h-6 fill-gray-200"' +
@@ -272,10 +270,6 @@ function disableQuickAccessButtons() {
     $('#clear-all-small').addClass("btn-disabled");
     $('#clear-questions').addClass("btn-disabled");
     $('#clear-questions-small').addClass("btn-disabled");
-    for (let i = 1; i <= 6; i++) {
-        $('#ex-' + i).addClass("btn-disabled");
-        $('#ex-small-' + i).addClass("btn-disabled");
-    }
 }
 
 function enableQuickAccessButtons() {
@@ -288,6 +282,24 @@ function enableQuickAccessButtons() {
     for (let i = 1; i <= 6; i++) {
         $('#ex-' + i).removeClass("btn-disabled");
         $('#ex-small-' + i).removeClass("btn-disabled");
+    }
+}
+
+function disableExamples() {
+    for (let i = 1; i <= 6; i++) {
+        $('#ex-gr-' + i).addClass("btn-disabled");
+        $('#ex-gr-small-' + i).addClass("btn-disabled");
+        $('#ex-en-' + i).addClass("btn-disabled");
+        $('#ex-en-small-' + i).addClass("btn-disabled");
+    }
+}
+
+function enableExamples() {
+    for (let i = 1; i <= 6; i++) {
+        $('#ex-gr-' + i).removeClass("btn-disabled");
+        $('#ex-gr-small-' + i).removeClass("btn-disabled");
+        $('#ex-en-' + i).removeClass("btn-disabled");
+        $('#ex-en-small-' + i).removeClass("btn-disabled");
     }
 }
 
@@ -342,6 +354,7 @@ $('#answer-button').on('click', () => {
     startLoading();
     disableQuickAccessButtons();
     disableQuestionButtons();
+    disableExamples();
 
 
     let request = {};
@@ -363,13 +376,14 @@ $('#answer-button').on('click', () => {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(request),
-        timeout: 120000,
+        timeout: 240000,
         dataType: 'json',
         url: 'http://tiresias.fun/questions',
         success: (answers) => {
             showDeleteButtons();
             enableQuickAccessButtons();
             enableQuestionButtons();
+            enableExamples();
             i = 1;
             for (let key in answers) {
                 console.log(answers[key]);
@@ -389,19 +403,33 @@ $('#answer-button').on('click', () => {
             }
         },
         error: (e) => {
+            console.log(e);
             showDeleteButtons();
             clearResults();
             enableQuickAccessButtons();
             enableQuestionButtons();
-            addErrorPopup('An unhandled error occured while answering your questions.');
-            console.log(e);
+            enableExamples();
+
+            let errorMsg = '';
+            switch (e.status) {
+                case 502: // Bad gateway
+                    errorMsg = 'The model you used terminated unexpectedly please use another model or try again later.';
+                    break;
+                case 504: // Timeout
+                    errorMsg = 'The server is taking too long to proccess your request, please try again later.';
+                    break;
+                default:
+                    errorMsg = 'An unhandled error occured, please contact the stuff and try again later.';
+                    break;
+            }
+            addErrorPopup(errorMsg);
         }
     });
 });
 
 function setDefaultConfiguration() {
-    $('#model').val('bert-large-cased-whole-word-masking-finetuned-squad');
-    $('#model-small').val('bert-large-cased-whole-word-masking-finetuned-squad');
+    $('#model').val('deepset/roberta-base-squad2');
+    $('#model-small').val('deepset/roberta-base-squad2');
     $('#lang').val('en');
     $('#lang-small').val('en');
     $('#trans').val('helsinki');
@@ -447,16 +475,10 @@ $('#default').on('click', setDefaultConfiguration);
 
 function setExample(lang, context, questions) {
     // Set app to initial state
-    clearAll();
+    clearQuestions();
     // Set Configuration
-    $('#model').val('bert-large-cased-whole-word-masking-finetuned-squad');
-    $('#model-small').val('bert-large-cased-whole-word-masking-finetuned-squad');
     $('#lang').val(lang);
     $('#lang-small').val(lang);
-    $('#trans').val('helsinki');
-    $('#trans-small').val('helsinki');
-    $('#erm').val('lod');
-    $('#erm-small').val('lod');
 
     // Set Context
     if ((context === "" && haveContext == true) ||
@@ -479,20 +501,46 @@ function setExample(lang, context, questions) {
 }
 
 // Set Examples
-examples = [
-    ['en', '',
-        ['Who was Leonidas ?', 'What was the city of Leonidas ?', 'Where did Leonidas die ?']],
-    ['en', '', [1, 2, 3]],
-    ['en', '', [1, 2, 3]],
-    ['en', '', [1, 2, 3]],
-    ['en', '', [1, 2, 3]],
-    ['en', '', [1, 2, 3]]
+gr_examples = [
+    ['el', '',
+        ['Ποιος ήταν ο Λεωνίδας ?', 'Ποια ήταν η πόλη του Λεωνίδα ?']],
+    ['el', '',
+        ['Ποιο ήταν το επάγγελμα του Ελ Γκρέκο στο Ηράκλειο ?', 'Από που επηρεάστηκε ο Ελ Γκρέκο ?',]],
+    ['el', '',
+        ['Που έγιναν οι Ολυμπιακοί αγώνες του 1976 ?']],
+    ['el', '',
+        ['Ποια ηρωική πράξη έκανε ο Μανώλης Γλέζος ?']],
+    ['el', '',
+        ['Πόσα χρόνια συνυπάρχει η Γάτα σε ανθρώπινο περιβάλλον ?']],
+    ['el', '',
+        ['Πότε αναγνωρίστηκε η Ελλάδα σαν ανεξάρτητο κράτος ?']]
 ];
 
-for (let i = 1; i <= examples.length; i++) {
-    let example = examples[i - 1];
-    $('#ex-' + i).on('click', () => { setExample(example[0], example[1], example[2]) });
-    $('#ex-small-' + i).on('click', () => { setExample(example[0], example[1], example[2]) });
+en_examples = [
+    ['en', '',
+        ['Who was Leonidas ?', 'What was the city of Leonidas ?']],
+    ['en', '',
+        ['Which was the job of El Greco in Heraklion ?', 'Which people influenced El Greco ?']],
+    ['en', '',
+        ['Where was the 1976  Olympic Games located ?']],
+    ['en', '',
+        ['Which heroic move was made from Manolis Glezos ?']],
+    ['en', '',
+        ['How many years the Cat exists with humans ?']],
+    ['en', '',
+        ['When Greece recognized as an independent country ?']]
+];
+
+for (let i = 1; i <= gr_examples.length; i++) {
+    let example = gr_examples[i - 1];
+    $('#ex-gr-' + i).on('click', () => { setExample(example[0], example[1], example[2]) });
+    $('#ex-gr-small-' + i).on('click', () => { setExample(example[0], example[1], example[2]) });
+}
+
+for (let i = 1; i <= en_examples.length; i++) {
+    let example = en_examples[i - 1];
+    $('#ex-en-' + i).on('click', () => { setExample(example[0], example[1], example[2]) });
+    $('#ex-en-small-' + i).on('click', () => { setExample(example[0], example[1], example[2]) });
 }
 
 // Fix scrolling

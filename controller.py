@@ -10,11 +10,12 @@ def answer_question(context, question, model, lang, translator):
     print('Model Input:')
     print('Context: ', context)
     print('Question: ', question)
+    
     start = time.time()
     question_answerer = pipeline(task="question-answering", model = model)
     qa = question_answerer(question = question, context = context)
-    print('Model Answered: ', qa)
     end = time.time()
+    print('Model Answered: ', qa)
 
     if lang == 'el':
         return translate(qa['answer'], translator, 'en', 'el'), qa['score'], (end - start), qa['start'], qa['end']

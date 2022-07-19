@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="m-0 h-full bg-white">
 
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
-<body class="custom-scrollbar">
+<body class="custom-scrollbar max-h-full max-w-full ">
     <div id="info-card"
         class="text-lg font-semibold bg-neutral absolute hidden h-40 w-72 rounded-lg z-30 shadow-2xl text-base-200">
         <div id="text-container" class="p-5 flex flex-col">
@@ -23,12 +23,20 @@
             </div>
         </div>
     </div>
+    <div class="absolute right-7 top-5">
+        <svg id="help-btn"
+            class="w-10 h-10 fill-primary hover:cursor-pointer hover:scale-125 ease-in hover:fill-neutral"
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path
+                d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 400c-18 0-32-14-32-32s13.1-32 32-32c17.1 0 32 14 32 32S273.1 400 256 400zM325.1 258L280 286V288c0 13-11 24-24 24S232 301 232 288V272c0-8 4-16 12-21l57-34C308 213 312 206 312 198C312 186 301.1 176 289.1 176h-51.1C225.1 176 216 186 216 198c0 13-11 24-24 24s-24-11-24-24C168 159 199 128 237.1 128h51.1C329 128 360 159 360 198C360 222 347 245 325.1 258z" />
+        </svg>
+    </div>
     <div id="popups" class="flex justify-center sm:w-11/12">
     </div>
-    <div class="flex flex-no-wrap">
+    <div class="flex flex-no-wrap bg-white">
         <!-- Sidebar starts -->
         <div id="sidebar"
-            class="w-96 h-screen sm:relative fixed shadow-2xl flex-col justify-between hidden sm:flex rounded-md">
+            class="w-96 h-screen sm:relative fixed shadow-2xl flex-col bg-gray-100 justify-between hidden sm:flex rounded-md">
             <div class="px-8 overflow-y-scroll custom-scrollbar">
                 <div class="h-16 w-full flex items-center mt-5 mb-1">
                     <h1 class="custom-font custom-line font-semibold text-3xl text-primary mx-5">CONFIGURATION</h1>
@@ -84,16 +92,28 @@
                     <div class="flex flex-row w-full">
                         <div class="flex flex-col mr-2 w-full">
                             <button class="btn-primary btn text-gray-200 mb-10" id="clear-all">Clear All</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-1">Example #1</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-3">Example #3</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-5">Example #5</button>
+                            <h1 class="custom-font custom-line text-lg font-semibold text-primary mx-5 mb-5">GREEK
+                                EXAMPLES
+                            </h1>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-1">Example #1</button>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-2">Example #2</button>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-3">Example #3</button>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-4">Example #4</button>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-5">Example #5</button>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-6">Example #6</button>
                         </div>
                         <div class="flex flex-col ml-2 w-full">
                             <button class="btn-primary btn text-gray-200 mb-10" id="clear-questions">Clear
                                 Questions</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-2">Example #2</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-4">Example #4</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-6">Example #6</button>
+                            <h1 class="custom-font custom-line text-lg font-semibold text-primary mx-5 mb-5">ENGILSH
+                                EXAMPLES
+                            </h1>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-1">Example #1</button>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-2">Example #2</button>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-3">Example #3</button>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-4">Example #4</button>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-5">Example #5</button>
+                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-6">Example #6</button>
                         </div>
                     </div>
                 </div>
@@ -114,7 +134,7 @@
                 <img src="https://tuk-cdn.s3.amazonaws.com/can-uploader/light_with_icons_at_bottom-svg8.svg"
                     alt="cross">
             </button>
-            <div class="px-8 overflow-scroll custom-scrollbar h-screen bg-base-100 shadow-2xl">
+            <div class="px-8 overflow-scroll custom-scrollbar h-screen bg-gray-100 shadow-2xl">
                 <div class="h-16 w-full flex items-center justify-center mb-5 pt-8">
                     <h1 class="custom-font custom-line font-semibold text-3xl text-primary">CONFIGURATION</h1>
                 </div>
@@ -167,20 +187,34 @@
                 <div class="flex flex-col justify-center place-items-center">
                     <button class="btn-primary btn text-gray-200 mb-5 w-full" id="default-small">Default
                         CONFIGURATION</button>
-                    <div class="flex flex-row w-full">
-                        <div class="flex flex-col mr-2 w-full">
-                            <button class="btn-primary btn text-gray-200 mb-10" id="clear-all-small">Clear All</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-small-1">Example #1</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-small-3">Example #3</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-small-5">Example #5</button>
-                        </div>
-                        <div class="flex flex-col ml-2 w-full">
-                            <button class="btn-primary btn text-gray-200 mb-10" id="clear-questions-small">Clear
-                                Questions</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-small-2">Example #4</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-small-4">Example #4</button>
-                            <button class="btn-primary btn text-gray-200 mb-5" id="ex-small-6">Example #6</button>
-                        </div>
+                    <div class="flex flex-col mr-2 w-full">
+                        <button class="btn-primary btn text-gray-200 mb-5" id="clear-all-small">Clear All</button>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="clear-questions-small">Clear
+                            Questions</button>
+                    </div>
+                    <div class="flex flex-col mr-2 w-full">
+
+                        <h1 class="custom-font custom-line text-lg font-semibold text-primary mx-5 mb-5">GREEK
+                            EXAMPLES
+                        </h1>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-small-1">Example #1</button>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-small-2">Example #2</button>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-small-3">Example #3</button>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-small-4">Example #4</button>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-small-5">Example #5</button>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-gr-small-6">Example #6</button>
+                    </div>
+                    <div class="flex flex-col ml-2 w-full">
+
+                        <h1 class="custom-font custom-line text-lg font-semibold text-primary mx-5 mb-5">ENGILSH
+                            EXAMPLES
+                        </h1>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-small-1">Example #1</button>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-small-2">Example #2</button>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-small-3">Example #3</button>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-small-4">Example #4</button>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-small-5">Example #5</button>
+                        <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-small-6">Example #6</button>
                     </div>
                 </div>
             </div>
@@ -249,7 +283,7 @@
             </div>
             <!-- Context -->
             <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6 context-container">
-                <textarea id="context" class="w-full h-full textarea textarea-primary resize-none"
+                <textarea id="context" class="w-full h-full bg-slate-100 textarea textarea-primary resize-none"
                     placeholder="Insert context here..."></textarea>
             </div>
             <!-- Button container -->
@@ -266,15 +300,13 @@
                         <span class="label-text text-lg font-semibold">Question 1</span>
                     </label>
                     <input type="text" placeholder="Write a question..."
-                        class="z-10 input input-bordered w-full input-question" />
-                    <result class="bg-primary p-3 -mt-1 rounded-t-none rounded-b-lg text-gray-200">
+                        class="z-10 input input-bordered w-full bg-slate-100 input-question" />
+                    <result class="bg-primary p-3 -mt-1 rounded-t-none rounded-b-lg text-white">
                     </result>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-
 </body>
 
 </html>

@@ -182,7 +182,7 @@ function writeResultsError(questionIndex, errorMsg) {
 
 function writeResults(questionIndex, answer, conf_score, link, lang, resp_time) {
     $('result').get(questionIndex - 1).innerText = answer;
-    $($('result').get(questionIndex - 1)).addClass(conf_score > 0.65 ? 'bg-success' : 'bg-warning');
+    $($('result').get(questionIndex - 1)).addClass(conf_score > 0.44 ? 'bg-success' : 'bg-warning');
 
     // Add element to dom
     $($('result').get(questionIndex - 1)).append(
@@ -552,7 +552,7 @@ document.addEventListener('scroll', (e) => {
 
 // Youtube and Github buttons
 $('#yt-btn').on('click', () => {
-    let url = "https://www.youtube.com/watch?v=dX94_wLj5ws&list=PLE9AF9AC69C37A3BF&index=26";
+    let url = "https://www.youtube.com/watch?v=eNiD7Dvco6M";
     window.open(url, '_blank').focus();
 });
 

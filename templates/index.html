@@ -46,8 +46,8 @@
                 <div class="w-full max-w-xs mb-5 text-sm flex flex-row bg-primary pl-4 items-center rounded-lg h-12">
                     <div class="font-semibold text-gray-200 mr-auto">Give Context:</div>
                     <div class="form-control mr-3">
-                        <input id="context-check" type="checkbox" class="toggle toggle-md context-toggle bg-secondary"
-                            checked />
+                        <input id="context-check" type="checkbox"
+                            class="toggle toggle-md context-toggle bg-secondary" />
                     </div>
                 </div>
                 <select id="model" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
@@ -78,7 +78,7 @@
                     <option value="bing">Bing</option>
                     <option value="helsinki">Helsinki</option>
                 </select>
-                <select id='erm' class="select w-full max-w-xs bg-primary text-gray-200 mb-5 hidden">
+                <select id='erm' class="select w-full max-w-xs bg-primary text-gray-200 mb-5">
                     <option value="pick" disabled selected>Entity Recognition</option>
                     <option value="babelfy" disabled>Babelfy</option>
                     <option value="lod">LODsyndesis</option>
@@ -106,7 +106,7 @@
                         <div class="flex flex-col ml-2 w-full">
                             <button class="btn-primary btn text-gray-200 mb-10" id="clear-questions">Clear
                                 Questions</button>
-                            <h1 class="custom-font custom-line text-lg font-semibold text-primary mx-5 mb-5">ENGILSH
+                            <h1 class="custom-font custom-line text-lg font-semibold text-primary mx-5 mb-5">ENGLISH
                                 EXAMPLES
                             </h1>
                             <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-1">Example #1</button>
@@ -144,8 +144,7 @@
                     class="w-full max-w-xs mb-5 text-sm flex flex-row bg-primary pl-4 items-center rounded-lg h-12 context-small">
                     <div class="font-semibold text-gray-200 mr-auto">Give Context:</div>
                     <div class="form-control mr-3">
-                        <input id="context-check-small" type="checkbox" class="toggle toggle-md context-toggle"
-                            checked />
+                        <input id="context-check-small" type="checkbox" class="toggle toggle-md context-toggle" />
                     </div>
                 </div>
                 <select id="model-small" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 ">
@@ -176,7 +175,7 @@
                     <option value="bing">Bing</option>
                     <option value="helsinki">Helsinki</option>
                 </select>
-                <select id="erm-small" class="select w-full max-w-xs bg-primary text-gray-200 mb-5 hidden">
+                <select id="erm-small" class="select w-full max-w-xs bg-primary text-gray-200 mb-5">
                     <option value="pick" disabled selected>Entity Recognition</option>
                     <option value="babelfy" disabled>Babelfy</option>
                     <option value="lod">LODsyndesis</option>
@@ -207,7 +206,7 @@
                     </div>
                     <div class="flex flex-col ml-2 w-full">
 
-                        <h1 class="custom-font custom-line text-lg font-semibold text-primary mx-5 mb-5">ENGILSH
+                        <h1 class="custom-font custom-line text-lg font-semibold text-primary mx-5 mb-5">ENGLISH
                             EXAMPLES
                         </h1>
                         <button class="btn-primary btn text-gray-200 mb-5" id="ex-en-small-1">Example #1</button>
@@ -283,7 +282,7 @@
                 </svg>
             </div>
             <!-- Context -->
-            <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6 context-container">
+            <div class="hidden container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6 context-container">
                 <textarea id="context" class="w-full h-full bg-slate-100 textarea textarea-primary resize-none"
                     placeholder="Insert context here..."></textarea>
             </div>

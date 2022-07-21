@@ -3,8 +3,8 @@ var openSidebar = document.getElementById("openSideBar");
 var closeSidebar = document.getElementById("closeSideBar");
 sideBar.style.transform = "translateX(-320px)";
 
-var questionCounter = 1
-var haveContext = true
+var questionCounter = 1;
+var haveContext = false;
 
 // For info cards
 var info_card = $('#info-card');
@@ -26,7 +26,7 @@ function fillInfoCard(conf_score, source_link, src_lang, model_resp_time) {
         $("#source_link").attr("href", '');
     } else {
         $("#source_link").attr("href", source_link);
-        $("#source_link").text('Original text:');
+        $("#source_link").text('DBpedia Abstract');
         $("#source_link").addClass('underline');
         $("#source_link").addClass('text-blue-200');
         $("#source_link").removeClass('text-pink-200');

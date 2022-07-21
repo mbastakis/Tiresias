@@ -548,3 +548,15 @@ document.addEventListener('scroll', (e) => {
     $('#sidebar').css('top', window.scrollY + 'px');
     $('#mobile-nav').css('top', window.scrollY + 'px');
 });
+
+
+// Youtube and Github buttons
+$('#yt-btn').on('click', () => {
+    let url = "https://www.youtube.com/watch?v=dX94_wLj5ws&list=PLE9AF9AC69C37A3BF&index=26";
+    window.open(url, '_blank').focus();
+});
+
+$('#git-btn').on('click', () => {
+    let url = "https://github.com/mbastakis/Tiresias";
+    window.open(url, '_blank').focus();
+});

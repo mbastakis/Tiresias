@@ -1,6 +1,6 @@
 # Tiresias
 
-<div id="header" align="center"><img src='https://i.postimg.cc/B8NHcLgy/Tiresias-v2.png' title='tiresias-logo' width="500px" />
+<div id="header" align="center"><img src='https://svgshare.com/i/jLd.svg' title='tiresias-logo' width="500px" />
 	<div id="badges">
 		<br/>
 		<a href="your-linkedin-URL">

@@ -83,12 +83,12 @@ $ sudo unlink /etc/nginx/sites-enabled/default
 Finally we can start workers for our app to make the web app go live:
 > NOTE:  Running as a background process
 ```bash
-gunicorn --workers=3 app:app --timeout 120 --daemon
+$ gunicorn --workers=3 app:app --timeout 120 --daemon
 ```
 > NOTE: Running as a  process
 
 ```bash
-gunicorn --workers=3 app:app --timeout 120
+$ gunicorn --workers=3 app:app --timeout 120
 ```
 ## Folder Structure
 ```

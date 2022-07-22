@@ -2,18 +2,20 @@
 
 <div id="header" align="center"><img src='https://svgshare.com/i/jLd.svg' title='tiresias-logo' width="500px" />
 </div>
-<br/><br/>
-
-
-> A Bilingual Question Answering over DBpedia Abstracts through Machine Translation and BERT.
-
-**Description:** Tiresias is a research prototype that supports bilingual Question Answering (QA) over DBpedia abstracts. In particular, it retrieves a question either in Greek or in English language, and by exploiting popular Named Entity Recognition models for recognizing the entity of the question, the DBpedia abstracts written in the mentioned languages for the identified entity, Machine Translation (MT) tools, and popular BERT QA models (pretrained in English corpus), it produces the final answer.
+<br/>
 <div align="center">
 <img alt="Website" src="https://img.shields.io/website?down_color=red&down_message=down&label=Website Status&up_color=green&up_message=up&url=http%3A%2F%2Fwww.tiresias.com">
 <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/mbastakis/Tiresias">
 <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/torch">
 <img alt="GitHub branch checks state" src="https://img.shields.io/github/checks-status/mbastakis/Tiresias/master">
  </div>
+<br/>
+
+
+> A Bilingual Question Answering over DBpedia Abstracts through Machine Translation and BERT.
+
+**Description:** Tiresias is a research prototype that supports bilingual Question Answering (QA) over DBpedia abstracts. In particular, it retrieves a question either in Greek or in English language, and by exploiting popular Named Entity Recognition models for recognizing the entity of the question, the DBpedia abstracts written in the mentioned languages for the identified entity, Machine Translation (MT) tools, and popular BERT QA models (pretrained in English corpus), it produces the final answer.
+
  
 **Visit the web application [here](http://www.tiresias.fun)** 
 

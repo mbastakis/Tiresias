@@ -26,7 +26,9 @@
 - Tailwind
 
 **Screenshot:**
-[![webapp.png](https://i.postimg.cc/QxdHzvPm/webapp.png)](https://postimg.cc/yW21gp73)
+<br/>
+<br/>
+[![webapp-screenshot.png](https://i.postimg.cc/0QKj7V5m/webapp-screenshot.png)](https://github.com/mbastakis)
 
 ## Requirements
 In order to modify the web application you have to clone the repository and use one of the python versions listed above and download the dependencies. It is recommended to create and use a python environment and install the dependencies in the environment.

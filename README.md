@@ -1,30 +1,21 @@
 # Tiresias
 
-<div id="header" align="center"><img src='https://svgshare.com/i/jKc.svg' title='tiresias-logo' width="500px" />
-	<div id="badges">
-		<br/>
-		<a href="your-linkedin-URL">
-		    <img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/>
-  </a>
-  <a href="your-youtube-URL">
-    <img src="https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=youtube&logoColor=white" alt="Youtube Badge"/>
-  </a>
-  <a href="your-twitter-URL">
-    <img src="https://img.shields.io/badge/Twitter-blue?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter Badge"/>
-  </a>
+<div id="header" align="center"><img src='https://svgshare.com/i/jLd.svg' title='tiresias-logo' width="500px" />
 </div>
-</div>
-
-
-> A Bilingual Question Answering over DBpedia Abstracts through Machine Translation and BERT.
-
-**Description:** Tiresias is a research prototype that supports bilingual Question Answering (QA) over DBpedia abstracts. In particular, it retrieves a question either in Greek or in English language, and by exploiting popular Named Entity Recognition models for recognizing the entity of the question, the DBpedia abstracts written in the mentioned languages for the identified entity, Machine Translation (MT) tools, and popular BERT QA models (pretrained in English corpus), it produces the final answer.
+<br/>
 <div align="center">
 <img alt="Website" src="https://img.shields.io/website?down_color=red&down_message=down&label=Website Status&up_color=green&up_message=up&url=http%3A%2F%2Fwww.tiresias.com">
 <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/mbastakis/Tiresias">
 <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/torch">
 <img alt="GitHub branch checks state" src="https://img.shields.io/github/checks-status/mbastakis/Tiresias/master">
  </div>
+<br/>
+
+
+> A Bilingual Question Answering over DBpedia Abstracts through Machine Translation and BERT.
+
+**Description:** Tiresias is a research prototype that supports bilingual Question Answering (QA) over DBpedia abstracts. In particular, it retrieves a question either in Greek or in English language, and by exploiting popular Named Entity Recognition models for recognizing the entity of the question, the DBpedia abstracts written in the mentioned languages for the identified entity, Machine Translation (MT) tools, and popular BERT QA models (pretrained in English corpus), it produces the final answer.
+
  
 **Visit the web application [here](http://www.tiresias.fun)** 
 
@@ -35,7 +26,9 @@
 - Tailwind
 
 **Screenshot:**
-[![webapp.png](https://i.postimg.cc/QxdHzvPm/webapp.png)](https://postimg.cc/yW21gp73)
+<br/>
+<br/>
+[![webapp-screenshot.png](https://i.postimg.cc/0QKj7V5m/webapp-screenshot.png)](https://github.com/mbastakis)
 
 ## Requirements
 In order to modify the web application you have to clone the repository and use one of the python versions listed above and download the dependencies. It is recommended to create and use a python environment and install the dependencies in the environment.
@@ -83,12 +76,12 @@ $ sudo unlink /etc/nginx/sites-enabled/default
 Finally we can start workers for our app to make the web app go live:
 > NOTE:  Running as a background process
 ```bash
-gunicorn --workers=3 app:app --timeout 120 --daemon
+$ gunicorn --workers=3 app:app --timeout 120 --daemon
 ```
 > NOTE: Running as a  process
 
 ```bash
-gunicorn --workers=3 app:app --timeout 120
+$ gunicorn --workers=3 app:app --timeout 120
 ```
 ## Folder Structure
 ```

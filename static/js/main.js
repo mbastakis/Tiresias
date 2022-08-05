@@ -419,7 +419,7 @@ $('#answer-button').on('click', () => {
                     errorMsg = 'The server is taking too long to proccess your request, please try again later.';
                     break;
                 default:
-                    errorMsg = 'An unhandled error occured, please contact the stuff and try again later.';
+                    errorMsg = 'An unhandled error occured, please contact the stuff and try again later.\nException: ' + e.statusText;
                     break;
             }
             addErrorPopup(errorMsg);

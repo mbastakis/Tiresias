@@ -503,9 +503,9 @@ function setExample(lang, context, questions) {
 // Set Examples
 gr_examples = [
     ['el', '',
-        ['Ποιος ήταν ο Λεωνίδας ?', 'Ποια ήταν η πόλη του Λεωνίδα ?']],
+        ['Ποιος ήταν ο Λεωνίδας ?']],
     ['el', '',
-        ['Ποιο ήταν το επάγγελμα του Ελ Γκρέκο στο Ηράκλειο ?', 'Από που επηρεάστηκε ο Ελ Γκρέκο ?',]],
+        ['Ποιο ήταν το επάγγελμα του Ελ Γκρέκο στο Ηράκλειο ?']],
     ['el', '',
         ['Που έγιναν οι Ολυμπιακοί αγώνες του 1976 ?']],
     ['el', '',
@@ -518,9 +518,9 @@ gr_examples = [
 
 en_examples = [
     ['en', '',
-        ['Who was Leonidas ?', 'What was the city of Leonidas ?']],
+        ['Who was Leonidas ?']],
     ['en', '',
-        ['Which was the job of El Greco in Heraklion ?', 'Which people influenced El Greco ?']],
+        ['Which was the job of El Greco in Heraklion ?']],
     ['en', '',
         ['Where was the 1976  Olympic Games located ?']],
     ['en', '',
@@ -560,3 +560,23 @@ $('#git-btn').on('click', () => {
     let url = "https://github.com/mbastakis/Tiresias";
     window.open(url, '_blank').focus();
 });
+
+// First load
+setDefaultConfiguration();
+$('.input-question').get(0).value = "Which is the birth place of Plato ?";
+
+
+function onChangeLang(event) {
+    let selectedLang = $(event.target).find(':selected').text();
+    let questionText = $('.input-question').get(0).value;
+
+    if (questionText === "Which is the birth place of Plato ?" && selectedLang === 'Greek') {
+        $('.input-question').get(0).value = 'Που γεννήθηκε ο Πλάτωνας ?';
+    } else if (questionText === 'Που γεννήθηκε ο Πλάτωνας ?' && selectedLang === 'English') {
+        $('.input-question').get(0).value = 'Which is the birth place of Plato ?';
+    }
+
+}
+
+$('#lang').on('change', onChangeLang);
+$('#lang-small').on('change', onChangeLang);
